@@ -3,7 +3,12 @@
 	Fecha:		Agosto 13, 2017
 	Autor:		Maria Fernanda Cruz Gonzalez
 **********************************************/
+#include <GL/glew.h>
+#include <GL/freeglut.h>
 #include <iostream>
+#include "Circle.h"
+#include "Rectangle.h"
+#include "Employee.h"
 
 //PROBLEMA 1
 int PerimetroRectangulo(int base, int altura) {
@@ -109,8 +114,65 @@ bool EsPrimo(int n) {
 	}
 }
 
-int main() {		//Main de pruebas
-	int p, mayor, menor,n;
+void GameLoop() {	//Rendereando todo el semestre
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	//OpenGL viejito, solo para esta clase
+	glBegin(GL_TRIANGLES);
+
+	glColor3f(1.0f, 0.0f, 0.0f);
+	glVertex2f(-1.0f,-1.0f);
+
+	glColor3f(0.0f, 1.0f, 0.0f);
+	glVertex2f(1.0f, -1.0f);
+	
+	glColor3f(0.0f, 0.0f, 1.0f);
+	glVertex2f(0.0f, 1.0f);
+
+	glEnd();
+
+
+	glutSwapBuffers();
+}
+
+int main(int argc, char* argv[]) {		//Main de pruebas
+
+	//inicializar freeglut
+	//Freeglut se encarga de crear una ventana en donde podemos dibujar
+	glutInit(&argc, argv);
+	
+	//configuraion de freeGlut
+	//iniciar contexto de opeGL(capaidades de la aplicacion grafica) pipeline clasico
+	glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);		
+
+	//freeglut nos perite configurar eventos que ocurren en la ventana
+	//un evento como cuando cierran la venta= limpiar memoria= terminar el programa
+	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);	//limpiar memoria
+
+	//Configuramos framebuffer. solicitamos buffer 
+	//					true color	profundidad	segundo buffer para renderear
+	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
+
+	//dimensiones de ventana
+	glutInitWindowSize(600, 600);
+	//titulo de ventana
+	glutCreateWindow("Hello World GL");
+	
+	//asociamos una funcion de render para mandar llamar ara dibujar un frame
+	glutDisplayFunc(GameLoop);
+
+	//inicializamos Glew para obtener el API de OpenGL de nuestra tarjeta de video
+	glewInit();
+
+	//configurar OpenGL
+	glClearColor(1.0f, 1.0f, 0.5f, 1.0f);	//color por default 
+
+	glutMainLoop();	//iniciar la aplicaicon (main se pausa en esta linea hasta que se cierre la ventana)
+
+
+	return 0;
+
+	/*int p, mayor, menor,n;
 	float a;
 	//std::cout << "Hello, World!" << std::endl;
 	p= PerimetroRectangulo(3, 5);
@@ -145,6 +207,11 @@ int main() {		//Main de pruebas
 	std::cout << "Primo 79 = " << primo << std::endl;
 	std::cout << "Primo 52 = " << prime << std::endl;
 
+	Circle circulo(2.0, "green");
+	std::cout << circulo.GetRadius() << std::endl;
+
 	std::cin.get();
-	return 0;
+
+		return 0;
+*/
 }
