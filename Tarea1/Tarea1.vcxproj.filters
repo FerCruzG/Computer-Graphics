@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Archivos de código fuente\Shaders">
+      <UniqueIdentifier>{29fbf11a-6f0f-4743-ac07-e0a3c55ca1d2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -27,6 +30,9 @@
     <ClCompile Include="Employee.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
+    <ClCompile Include="InputFile.cpp">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rectangle.h">
@@ -38,5 +44,30 @@
     <ClInclude Include="Employee.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="InputFile.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Default.vert">
+      <Filter>Archivos de código fuente\Shaders</Filter>
+    </None>
+    <None Include="Default.frag">
+      <Filter>Archivos de código fuente\Shaders</Filter>
+    </None>
+    <None Include="DiscardCenter.frag">
+      <Filter>Archivos de código fuente\Shaders</Filter>
+    </None>
+    <None Include="DisardCenter.vert">
+      <Filter>Archivos de código fuente\Shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Prueba.txt">
+      <Filter>Archivos de recursos</Filter>
+    </Text>
+    <Text Include="palmera.txt">
+      <Filter>Archivos de recursos</Filter>
+    </Text>
   </ItemGroup>
 </Project>
