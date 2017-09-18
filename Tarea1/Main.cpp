@@ -20,6 +20,9 @@ GLuint vao;
 //identificador del manager de los shaders (ShaderProgram)
 GLuint shaderProgram;
 
+//float vertsPerFrame = 0.0f;
+//float delta = 0.40f;
+
 //PROBLEMA 1
 int PerimetroRectangulo(int base, int altura) {
 	int total;
@@ -123,6 +126,7 @@ bool EsPrimo(int n) {
 		}
 	}
 }
+
 void Initialize(){//solo se llama una vez; crea toda la memoria que el prgrama va a utilizar
 	//lista de elemntos
 	std::vector<glm::vec2> positions;
@@ -130,49 +134,29 @@ void Initialize(){//solo se llama una vez; crea toda la memoria que el prgrama v
 	//claramente en el CPU y RAM , no tarjeta de video
 	//inserta un elemento al final de la lista
 
-	float angle = 0;	
+	/*float angle = 0;	
 	//positions.push_back(glm::vec2(0.0f, 0.0f));
 	float radio = 1.0f;
 	float radio2 = 0.5f;
+	float R = 0.0f;
+	float G = 0.0f;
+	float B = 0.0f;
 
+	positions.push_back(glm::vec2(0.0, 1.0));
+	colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
 
 	for (int i = 0; i <= 361; i++) {
 		float j = i;
-		float R = 0.0f;
-		float G = 0.0f;
-		float B = 0.0f;
-		
+
 		float x = radio * cos(i);
 		float y = radio * sin(i);	
-		float R = R+0.1f;
-		float G = G + 0.1f;
-		float B = B + 0.1f;
-
+		
 		positions.push_back(glm::vec2(x, y));
-		colors.push_back(glm::vec3(R, G, B));
-		colors.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
-		colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+		colors.push_back(glm::vec3(x,y,	x*y));
+
 		//std::cout << "For = " << x << " " <<y <<std::endl;
 		angle++;
-		for (int i = 0; i <= 361; i++) {
-			float j = i;
-			float R = 0.0f;
-			float G = 0.0f;
-			float B = 0.0f;
-
-			float x = radio2 * cos(i);
-			float y = radio2 * sin(i);
-
-			positions.push_back(glm::vec2(x, y));
-			colors.push_back(glm::vec3(R, G, B));
-
-			//std::cout << "For = " << x << " " <<y <<std::endl;
-			angle++;
-		}
-	}
-
-
-	
+	}	*/
 	//positions.push_back(glm::vec2(x,y));	//1
 	/*positions.push_back(glm::vec2(.95f, 0.2f)); //2
 	
@@ -180,6 +164,31 @@ void Initialize(){//solo se llama una vez; crea toda la memoria que el prgrama v
 	
 	/*	colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));*/
 
+	positions.push_back(glm::vec2(0.6f,-0.8f));		//1
+	positions.push_back(glm::vec2(0.95f, 0.3f));	//2		
+	positions.push_back(glm::vec2(0.45f, 0.15f));	//3
+	positions.push_back(glm::vec2(0.0f, 1.0f));		//4
+	positions.push_back(glm::vec2(0.0f, 0.5f));		//5
+	positions.push_back(glm::vec2(-0.95f, 0.3f));	//6
+	positions.push_back(glm::vec2(-0.45f, 0.15f));	//7
+	positions.push_back(glm::vec2(-0.6f, -0.8f));	//8
+	positions.push_back(glm::vec2(-0.3f, -0.4f));	//9
+	positions.push_back(glm::vec2(0.6f, -0.8f));	//1
+	positions.push_back(glm::vec2(0.3f, -0.4f));	//11
+	positions.push_back(glm::vec2(0.45f, 0.15f));	//3
+
+	colors.push_back(glm::vec3(0.0f, 0.749f, 1.0f));
+	colors.push_back(glm::vec3(0.196f, 0.804f, 0.196f));
+	colors.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+	colors.push_back(glm::vec3(1.0f, 1.0f, 0.0f));
+	colors.push_back(glm::vec3(1.0f, 0.271f, 0.0f));
+	colors.push_back(glm::vec3(1.0f, 0.078f, 0.576f));
+	colors.push_back(glm::vec3(0.545f, 0.0f, 0.545f));
+	colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+	colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+	colors.push_back(glm::vec3(0.0f, 0.749f, 1.0f));
+	colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+	colors.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
 
 	glGenVertexArrays(1, &vao);
 	//todos los VBOs creados y configurados 
@@ -247,8 +256,15 @@ void Initialize(){//solo se llama una vez; crea toda la memoria que el prgrama v
 	glBindAttribLocation(shaderProgram, 0, "VertexPositon");
 	//asociamos un uffer con inidice 1 (colores) a la variable VertexColor
 	glBindAttribLocation(shaderProgram, 1, "VertexColor");
+	//binding de uniforms
+
 	//ejecutamos el proceso de linker (aseguramos que el vertex y fragment son compatibles)
 	glLinkProgram(shaderProgram);
+	//Manager para usar un uniform
+	glUseProgram(shaderProgram);				//del shader	variable
+	GLint uniformLocation = glGetUniformLocation(shaderProgram, "Resolution");
+	glUniform2f(uniformLocation,650.0f,650.0f);
+	glUseProgram(0);
 }
 void GameLoop() {	//Rendereando todo el semestre
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);//limpianod buffers
@@ -259,9 +275,11 @@ void GameLoop() {	//Rendereando todo el semestre
 	//VBOs asociados automaticamente
 	glBindVertexArray(vao);//activando el manager
 	
-
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 12);
 	//glDrawArrays(GL_TRIANGLE_FAN, 0, 8);
-	glDrawArrays(GL_TRIANGLE_FAN, 0, 361);
+	//glDrawArrays(GL_TRIANGLE_FAN, 0, vertsPerFrame);
+	//glDrawArrays(GL_TRIANGLE_FAN, 0, 362);
+
 
 	//OpenGL viejito, solo para esta clase
 	//glBegin(GL_TRIANGLES);
@@ -279,8 +297,27 @@ void GameLoop() {	//Rendereando todo el semestre
 //	glEnd();
 
 	glBindVertexArray(0);
+/*
+	vertsPerFrame += delta;
+	if (vertsPerFrame < 0.0f || vertsPerFrame >= 362.0f)
+		delta *= -1.0f;*/
 	//cuando terminas de renderear, cambias los buffers
 	glutSwapBuffers();
+}
+
+void Idle() {
+	//cuando OpenGL entra en mode de reposo (ahorrar bateria), le decimos que vuelva a dibujar
+	glutPostRedisplay();
+}
+
+void ReshapeWindow(int width, int height) {
+
+	glViewport(0, 0, width / 2, height /2);
+	/*glViewport(0, 0, width, height);
+	glUseProgram(shaderProgram);				//del shader	variable
+	GLint uniformLocation = glGetUniformLocation(shaderProgram, "Resolution");
+	glUniform2f(uniformLocation, width, height);
+	glUseProgram(0);*/
 }
 
 int main(int argc, char* argv[]) {		//Main de pruebas
@@ -311,11 +348,23 @@ int main(int argc, char* argv[]) {		//Main de pruebas
 	//asociamos una funcion de render para mandar llamar ara dibujar un frame
 	glutDisplayFunc(GameLoop);
 
+	//asociar funcion para el cambio de resolucion de la ventana.
+	// Freeglut la va a mandar a llamarcuando se cambie el tamanio de la ventana
+	glutReshapeFunc(ReshapeWindow);
+	
+	//llmar funion cada que OpenGl entre en modo de reposo
+	glutIdleFunc(Idle);
+
 	//inicializamos Glew para obtener el API de OpenGL de nuestra tarjeta de video
 	glewInit();
 
 	//configurar OpenGL
 	glClearColor(1.0f, 1.0f, 0.5f, 1.0f);	//color por default 
+	//Decirle al buffer de profundidad que se active
+	glEnable(GL_DEPTH_TEST);
+	//borrado de caras traseras. todo debe ser CCW
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 
 	//llamar initializa
 	Initialize();
