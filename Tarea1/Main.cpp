@@ -165,17 +165,17 @@ void Initialize(){//solo se llama una vez; crea toda la memoria que el prgrama v
 	/*	colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));*/
 
 	positions.push_back(glm::vec2(0.6f,-0.8f));		//1
-	positions.push_back(glm::vec2(0.95f, 0.3f));	//2		
-	positions.push_back(glm::vec2(0.45f, 0.15f));	//3
-	positions.push_back(glm::vec2(0.0f, 1.0f));		//4
-	positions.push_back(glm::vec2(0.0f, 0.5f));		//5
-	positions.push_back(glm::vec2(-0.95f, 0.3f));	//6
-	positions.push_back(glm::vec2(-0.45f, 0.15f));	//7
-	positions.push_back(glm::vec2(-0.6f, -0.8f));	//8
-	positions.push_back(glm::vec2(-0.3f, -0.4f));	//9
-	positions.push_back(glm::vec2(0.6f, -0.8f));	//1
-	positions.push_back(glm::vec2(0.3f, -0.4f));	//11
-	positions.push_back(glm::vec2(0.45f, 0.15f));	//3
+	positions.push_back(glm::vec2(0.95f, 0.3f));	//1		
+	positions.push_back(glm::vec2(0.45f, 0.15f));	//1
+	positions.push_back(glm::vec2(0.0f, 1.0f));		//1
+	positions.push_back(glm::vec2(0.0f, 0.5f));		//1
+	positions.push_back(glm::vec2(-0.95f, 0.3f));//1
+	positions.push_back(glm::vec2(-0.45f, 0.15f));//1
+	positions.push_back(glm::vec2(-0.6f, -0.8f));//1
+	positions.push_back(glm::vec2(-0.3f, -0.4f));//1
+	positions.push_back(glm::vec2(0.6f, -0.8f));//1
+	positions.push_back(glm::vec2(0.3f, -0.4f));//1
+	positions.push_back(glm::vec2(0.45f, 0.15f));//1
 
 	colors.push_back(glm::vec3(0.0f, 0.749f, 1.0f));
 	colors.push_back(glm::vec3(0.196f, 0.804f, 0.196f));
