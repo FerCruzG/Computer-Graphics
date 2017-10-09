@@ -1,53 +1,80 @@
+/*********************************************
+Materia: Gráficas Computacionales
+Fecha: 02 de Octubre del 2017
+Autor: A01373179 Maria Fernanda Cruz Gonzalez
+**********************************************/
 #include "ShaderProgram.h"
+#include "Shader.h"
+#include <vector>
 
-ShaderProgram::ShaderProgram()
-{
+ShaderProgram::ShaderProgram(){
+	_programHandle = 0;
 }
 
-void ShaderProgram::CreateProgram()
-{
+ShaderProgram::~ShaderProgram(){
+	DeleteProgram();
+
 }
 
-void ShaderProgram::AttachShader(std::string path, GLenum type)
-{
+void ShaderProgram::CreateProgram(){
+	_programHandle = glCreateProgram();
 }
 
-void ShaderProgram::LinkProgram()
-{
+void ShaderProgram::AttachShader(std::string name, GLenum type){
+	std::unique_ptr<Shader> shader(new Shader);
+	shader->CreateShader(name, type);
+	_attachedShaders.push_back(std::move(shader));
 }
 
-void ShaderProgram::Activate()
-{
+void ShaderProgram::LinkProgram(){
+	for (size_t i = 0; i < _attachedShaders.size(); i++)
+		glAttachShader(_programHandle, _attachedShaders[i]->GetHandle());
+
+	glLinkProgram(_programHandle);
+
+	DeleteAndDetachShaders();
 }
 
-void ShaderProgram::Deactivate()
-{
+void ShaderProgram::Activate(){
+	glUseProgram(_programHandle);
 }
 
-void ShaderProgram::SetAttribute(GLuint locationIndex, std::string name)
-{
+void ShaderProgram::Deactivate(){
+	glUseProgram(0);
 }
 
-void ShaderProgram::SetUniformf(std::string name, float value)
-{
+void ShaderProgram::SetAttribute(GLuint locationIndex, std::string name){
+	glBindAttribLocation(_programHandle, locationIndex, name.c_str());
 }
 
-void ShaderProgram::SetUniformf(std::string name, float x, float y)
-{
+void ShaderProgram::SetUniformf(std::string name, float x){
+	GLint uniformLocation = glGetUniformLocation(_programHandle, name.c_str());
+	glUniform1f(uniformLocation, x);
 }
 
-void ShaderProgram::SetUniformf(std::string name, float x, float y, float z)
-{
+void ShaderProgram::SetUniformf(std::string name, float x, float y){
+	GLint uniformLocation = glGetUniformLocation(_programHandle, name.c_str());
+	glUniform2f(uniformLocation, x, y);
 }
 
-void ShaderProgram::SetUniformf(std::string name, float x, float y, float z, float w)
-{
+void ShaderProgram::SetUniformf(std::string name, float x, float y, float z){
+	GLint uniformLocation = glGetUniformLocation(_programHandle, name.c_str());
+	glUniform3f(uniformLocation, x, y, z);
 }
 
-void ShaderProgram::DeleteAndDetachShaders()
-{
+void ShaderProgram::SetUniformf(std::string name, float x, float y, float z, float w){
+	GLint uniformLocation = glGetUniformLocation(_programHandle, name.c_str());
+	glUniform4f(uniformLocation, x, y, z, w);
 }
 
-void ShaderProgram::DeleteProgram()
-{
+void ShaderProgram::DeleteAndDetachShaders(){
+	for (size_t i = 0; i < _attachedShaders.size(); i++)
+		glDetachShader(_programHandle, _attachedShaders[i]->GetHandle());
+
+	_attachedShaders.clear();
+}
+
+void ShaderProgram::DeleteProgram(){
+	DeleteAndDetachShaders();
+	glDeleteProgram(_programHandle);
 }

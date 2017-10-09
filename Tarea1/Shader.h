@@ -14,6 +14,7 @@ Autor : A01373179 Maria Fernanda Cruz Gonzalez
 	class Shader {	
 	public:
 		Shader();
+		~Shader();
 		void CreateShader(std::string path, GLenum type);
 		GLuint GetHandle();
 

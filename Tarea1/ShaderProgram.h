@@ -7,16 +7,18 @@ Autor: A01373179 Maria Fernanda Cruz Gonzalez
 #include <string>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
-#include <iostream>
 #include <vector>
+#include <memory>
 #include <glm/glm.hpp>
+#include "Shader.h"
 
 class ShaderProgram {
 public:
 	//Constructores 
 	ShaderProgram();
+	~ShaderProgram();
 	void CreateProgram();
-	void AttachShader(std::string path, GLenum type);
+	void AttachShader(std::string name, GLenum type);
 	void LinkProgram();
 	void Activate();
 	void Deactivate();
@@ -28,9 +30,8 @@ public:
 
 
 private:		//variables
-	GLuint _programHandle = 0;
-
-	//std::vector<std::unique_ptr<Shader>> _attachedShaders;
+	GLuint _programHandle;
+	std::vector<std::unique_ptr<Shader>> _attachedShaders;
 	void DeleteAndDetachShaders();
 	void DeleteProgram();
 };

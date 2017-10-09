@@ -15,7 +15,7 @@ class Mesh {	//declaracion de la clase Circle
 public:
 	//Constructores 
 	Mesh();
-
+	~Mesh();
 	void CreateMesh(GLint vertexCount);
 	void Draw(GLenum primitive);
 

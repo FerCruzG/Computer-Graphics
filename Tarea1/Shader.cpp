@@ -1,14 +1,36 @@
+/*********************************************
+Materia: Gráficas Computacionales
+Fecha: 02 de Octubre del 2017
+Autor: A01373179 Maria Fernanda Cruz Gonzalez
+**********************************************/
 #include "Shader.h"
+#include "InputFile.h"
+#include <vector>
 
-Shader::Shader()
-{
+Shader::Shader(){
+	_ShaderHandle = 0;
 }
 
-void Shader::CreateShader(std::string path, GLenum type)
-{
+Shader::~Shader(){
+	glDeleteShader(_ShaderHandle);
 }
 
-GLuint Shader::GetHandle()
-{
+void Shader::CreateShader(std::string path, GLenum type){
+	InputFile ifile;
+	if (!ifile.Read(path)) return;
+	std::string source = ifile.GetContents();
+
+	if (_ShaderHandle)
+		glDeleteShader(_ShaderHandle);
+
+	_ShaderHandle = glCreateShader(type);
+
+	const GLchar *source_c = (const GLchar*)source.c_str();
+	glShaderSource(_ShaderHandle, 1, &source_c, nullptr);
+
+	glCompileShader(_ShaderHandle);
+}
+
+GLuint Shader::GetHandle(){
 	return GLuint();
 }
