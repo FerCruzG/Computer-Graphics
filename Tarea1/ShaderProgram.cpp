@@ -6,6 +6,8 @@ Autor: A01373179 Maria Fernanda Cruz Gonzalez
 #include "ShaderProgram.h"
 #include "Shader.h"
 #include <vector>
+#include <glm/gtc/type_ptr.hpp>
+#include <iostream>
 
 ShaderProgram::ShaderProgram(){
 	_programHandle = 0;
@@ -65,6 +67,12 @@ void ShaderProgram::SetUniformf(std::string name, float x, float y, float z){
 void ShaderProgram::SetUniformf(std::string name, float x, float y, float z, float w){
 	GLint uniformLocation = glGetUniformLocation(_programHandle, name.c_str());
 	glUniform4f(uniformLocation, x, y, z, w);
+}
+
+void ShaderProgram::SetUniformMatrix(std::string name, glm::mat4 matrix){
+	GLint uniformLocation = glGetUniformLocation(_programHandle, name.c_str());
+	glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(matrix));
+
 }
 
 void ShaderProgram::DeleteAndDetachShaders(){

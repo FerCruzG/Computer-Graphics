@@ -32,5 +32,5 @@ void Shader::CreateShader(std::string path, GLenum type){
 }
 
 GLuint Shader::GetHandle(){
-	return GLuint();
+	return _ShaderHandle;
 }

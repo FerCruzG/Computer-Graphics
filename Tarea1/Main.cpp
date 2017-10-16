@@ -10,10 +10,13 @@ Autor: A01373179 Maria Fernanda Cruz Gonzalez
 #include <vector>
 #include "Mesh.h"
 #include "ShaderProgram.h"
-
+#include "Transform.h"
+#include "Camera.h"
 
 Mesh _mesh;
 ShaderProgram _shaderProgram;
+Transform _transform;
+Camera _camera; //camera 3D
 
 void Initialize()
 {
@@ -22,19 +25,68 @@ void Initialize()
 	// Creación del atributo de posiciones de los vértices.
 	// Lista de vec2
 	// Claramente en el CPU y RAM
-	std::vector<glm::vec2> positions;
+	std::vector<glm::vec3> positions;
+	/*positions.push_back(glm::vec2(glm::cos(glm::radians(90.0f)),glm::sin(glm::radians(90.0f))));
+	positions.push_back(glm::vec2(0.5f * glm::cos(glm::radians(18.0f)),	0.5f * glm::sin(glm::radians(18.0f))));
+	positions.push_back(glm::vec2(glm::cos(glm::radians(18.0f)),glm::sin(glm::radians(18.0f))));
+	positions.push_back(glm::vec2(0.5f * glm::cos(glm::radians(306.0f)),0.5f * glm::sin(glm::radians(306.0f))));
+	positions.push_back(glm::vec2(glm::cos(glm::radians(306.0f)),glm::sin(glm::radians(306.0f))));
+	positions.push_back(glm::vec2(0.5f * glm::cos(glm::radians(234.0f)),0.5f * glm::sin(glm::radians(234.0f))));
+	positions.push_back(glm::vec2(glm::cos(glm::radians(234.0f)),glm::sin(glm::radians(234.0f))));
+	positions.push_back(glm::vec2(0.5f * glm::cos(glm::radians(162.0f)),0.5f * glm::sin(glm::radians(162.0f))));
+	positions.push_back(glm::vec2(glm::cos(glm::radians(162.0f)),glm::sin(glm::radians(162.0f))));
+	positions.push_back(glm::vec2(0.5f * glm::cos(glm::radians(90.0f)),	0.5f * glm::sin(glm::radians(90.0f))));
+	positions.push_back(glm::vec2(glm::cos(glm::radians(90.0f)),glm::sin(glm::radians(90.0f))));
+	positions.push_back(glm::vec2(0.5f * glm::cos(glm::radians(18.0f)),	0.5f * glm::sin(glm::radians(18.0f))));*/
+	//adelante
+	positions.push_back(glm::vec3(-3.0f, -3.0f, 3.0f));
+	positions.push_back(glm::vec3(3.0f, 3.0f, 3.0f));
+	positions.push_back(glm::vec3(-3.0f, 3.0f, 3.0f));
+	positions.push_back(glm::vec3(3.0f, -3.0f, 3.0f));
+	positions.push_back(glm::vec3(3.0f, 3.0f, 3.0f));
+	positions.push_back(glm::vec3(-3.0f, -3.0f, 3.0f));
+	
+	//izquierda
+	positions.push_back(glm::vec3(-3.0f, 3.0f, 3.0f));
+	positions.push_back(glm::vec3(-3.0f, -3.0f, -3.0f));
+	positions.push_back(glm::vec3(-3.0f, -3.0f, 3.0f));
+	positions.push_back(glm::vec3(-3.0f, 3.0f, -3.0f));
+	positions.push_back(glm::vec3(-3.0f, -3.0f, -3.0f));
+	positions.push_back(glm::vec3(-3.0f, 3.0f, 3.0f));
 
-	positions.push_back(glm::vec2(glm::cos(glm::radians(90.0f)), glm::sin(glm::radians(90.0f))));
-	positions.push_back(glm::vec2(glm::cos(0.5f*glm::radians(18.0f)), 0.5f*glm::sin(glm::radians(18.0f))));
-	positions.push_back(glm::vec2(glm::cos(glm::radians(18.0f)), glm::sin(glm::radians(18.0f))));
-	positions.push_back(glm::vec2(glm::cos(0.5f*glm::radians(306.0f)), 0.5f*glm::sin(glm::radians(306.0f))));
-	positions.push_back(glm::vec2(glm::cos(glm::radians(306.0f)), glm::sin(glm::radians(306.0f))));
-	positions.push_back(glm::vec2(glm::cos(0.5f*glm::radians(234.0f)), 0.5f*glm::sin(glm::radians(234.0f))));
-	positions.push_back(glm::vec2(glm::cos(glm::radians(234.0f)), glm::sin(glm::radians(234.0f))));
-	positions.push_back(glm::vec2(glm::cos(0.5f*glm::radians(162.0f)), 0.5f*glm::sin(glm::radians(162.0f))));
-	positions.push_back(glm::vec2(glm::cos(glm::radians(162.0f)), glm::sin(glm::radians(162.0f))));
-	positions.push_back(glm::vec2(glm::cos(glm::radians(90.0f)), glm::sin(glm::radians(90.0f))));
-	positions.push_back(glm::vec2(glm::cos(0.5f*glm::radians(18.0f)), 0.5f*glm::sin(glm::radians(18.0f))));
+	//atras
+	positions.push_back(glm::vec3(-3.0f, 3.0f, -3.0f));
+	positions.push_back(glm::vec3(3.0f, 3.0f, -3.0f));
+	positions.push_back(glm::vec3(-3.0f, -3.0f, -3.0f));
+	positions.push_back(glm::vec3(-3.0f, -3.0f, -3.0f));
+	positions.push_back(glm::vec3(3.0f, 3.0f, -3.0f));
+	positions.push_back(glm::vec3(3.0f, -3.0f, -3.0f));
+
+	//derecha
+	positions.push_back(glm::vec3(3.0f, -3.0f, -3.0f));
+	positions.push_back(glm::vec3(3.0f, 3.0f, 3.0f));	
+	positions.push_back(glm::vec3(3.0f, -3.0f, 3.0f));
+	positions.push_back(glm::vec3(3.0f, 3.0f, -3.0f));
+	positions.push_back(glm::vec3(3.0f, 3.0f, 3.0f));
+	positions.push_back(glm::vec3(3.0f, -3.0f, -3.0f));
+	
+
+	//Arriba
+	positions.push_back(glm::vec3(-3.0f, 3.0f, -3.0f));
+	positions.push_back(glm::vec3(-3.0f, 3.0f, 3.0f));
+	positions.push_back(glm::vec3(3.0f, 3.0f, -3.0f));
+	positions.push_back(glm::vec3(3.0f, 3.0f, -3.0f));
+	positions.push_back(glm::vec3(-3.0f, 3.0f, 3.0f));
+	positions.push_back(glm::vec3(3.0f, 3.0f, 3.0f));
+
+	//abajo
+	positions.push_back(glm::vec3(-3.0f, -3.0f, 3.0f));
+	positions.push_back(glm::vec3(-3.0f, -3.0f, -3.0f));
+	positions.push_back(glm::vec3(3.0f, -3.0f, -3.0f));
+	positions.push_back(glm::vec3(3.0f, -3.0f, -3.0f));
+	positions.push_back(glm::vec3(3.0f, -3.0f, 3.0f));
+	positions.push_back(glm::vec3(-3.0f, -3.0f, 3.0f));
+
 
 	// Arreglo de colores en el cpu
 	std::vector<glm::vec3> colors;
@@ -44,32 +96,63 @@ void Initialize()
 	colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
 	colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
 	colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-	colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-	colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-	colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-	colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-	colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-	colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
 
-	//numero de vertices que queremos agregar
-	_mesh.CreateMesh(12);
-	//lista de posiciones
-	_mesh.SetPositionAttribute(positions, GL_STATIC_DRAW,0);
-	//lista de colores
+	colors.push_back(glm::vec3(1.0f, 1.0f, 0.0f));
+	colors.push_back(glm::vec3(1.0f, 1.0f, 0.0f));
+	colors.push_back(glm::vec3(1.0f, 1.0f, 0.0f));
+	colors.push_back(glm::vec3(1.0f, 1.0f, 0.0f));
+	colors.push_back(glm::vec3(1.0f, 1.0f, 0.0f));
+	colors.push_back(glm::vec3(1.0f, 1.0f, 0.0f));
+
+	colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
+	colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
+	colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
+	colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
+	colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
+	colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
+
+	colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+	colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+	colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+	colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+	colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+	colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+
+	colors.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+	colors.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+	colors.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+	colors.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+	colors.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+	colors.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+
+	colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+	colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+	colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+	colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+	colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+	colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+
+	/*colors.push_back(glm::vec3(1.0f, 1.0f, 0.0f));
+	colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
+	colors.push_back(glm::vec3(1.0f, 0.0f, 1.0f));
+	colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+	colors.push_back(glm::vec3(0.0f, 1.0f, 1.0f));
+	colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));*/
+
+
+	_mesh.CreateMesh(36);
+	_mesh.SetPositionAttribute(positions, GL_STATIC_DRAW, 0);
 	_mesh.SetColorAttribute(colors, GL_STATIC_DRAW, 1);
 
-	//inicializar memoria, crear nuevo manager
 	_shaderProgram.CreateProgram();
-	
 	_shaderProgram.AttachShader("Default.vert", GL_VERTEX_SHADER);
 	_shaderProgram.AttachShader("Default.frag", GL_FRAGMENT_SHADER);
-
-	//Atributos que yo tengo nombre variable
 	_shaderProgram.SetAttribute(0, "VertexPosition");
-	//asociacion
 	_shaderProgram.SetAttribute(1, "VertexColor");
-	//Asegurar que todos reciben
 	_shaderProgram.LinkProgram();
+	//_camera.SetOrthigraphic(4.0f,4.0f);
+	_camera.MoveForward(15.0f);
+	//_transform.SetRotation(0.0f,0.0f, 90.0f);
 }
 
 void GameLoop()
@@ -78,15 +161,17 @@ void GameLoop()
 	// Siempre hacerlo al inicio del frame
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	//activar shader
+	//_camera.MoveForward(-0.0001f);
+
+	//_transform.Rotate(0.0f, 0.01f, 0.0f, false);//a lo largo de los ejes locales
+	_transform.Rotate(0.01f, 0.01f, 0.01f, true);//a lo largo de los ejes globales
+	
+
 	_shaderProgram.Activate();
-	_mesh.Draw(GL_TRIANGLE_STRIP);
-	//desactivar shader
-	_shaderProgram.Deactivate;
-	
-	//Activar geometria
-	
-	//Desctivar geometria
+	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform.GetModelMatrix());
+//	_shaderProgram.SetUniformMatrix("modelMatrix", _transform.GetModelMatrix());
+	_mesh.Draw(GL_TRIANGLES);
+	_shaderProgram.Deactivate();
 
 	// Cuando terminamos de renderear, cambiamos los buffers.
 	glutSwapBuffers();
@@ -113,7 +198,7 @@ int main(int argc, char* argv[])
 	// en donde podemos dibujar
 	glutInit(&argc, argv);
 	// Solicitando una versión específica de OpenGL.
-	glutInitContextVersion(4, 4);
+	//glutInitContextVersion(4, 4);
 	// Iniciar el contexto de OpenGL. El contexto se refiere
 	// a las capacidades que va a tener nuestra aplicación
 	// gráfica.
@@ -127,7 +212,7 @@ int main(int argc, char* argv[])
 	// true color RGBA, un buffer de profundidad y un segundo buffer para renderear.
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
 	// Iniciar las dimensiones de la ventana (en pixeles)
-	glutInitWindowSize(400, 400);
+	glutInitWindowSize(600, 600);
 	// Creamos la ventana y le damos un título.
 	glutCreateWindow("Hello World GL");
 	// Asociamos una función de render.

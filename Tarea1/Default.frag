@@ -4,9 +4,7 @@ in vec3 InterpolatedColor;
 
 out vec4 FragColor;
 
-uniform vec2 Resolution;
-
-void main(){
-
+void main()
+{
 	FragColor = vec4(InterpolatedColor, 1.0f);
-	}
+}
