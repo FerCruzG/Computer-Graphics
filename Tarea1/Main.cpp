@@ -2,6 +2,7 @@
 Materia: Gráficas Computacionales
 Fecha: 02 de Octubre del 2017
 Autor: A01373179 Maria Fernanda Cruz Gonzalez
+		A01373243 Jose Angel Prado Dupont
 **********************************************/
 #include <GL/glew.h>
 #include <GL/freeglut.h>
@@ -243,7 +244,7 @@ int main(int argc, char* argv[])
 	// true color RGBA, un buffer de profundidad y un segundo buffer para renderear.
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
 	// Iniciar las dimensiones de la ventana (en pixeles)
-	glutInitWindowSize(1920, 1080);
+	glutInitWindowSize(500, 500);
 	// Creamos la ventana y le damos un título.
 	glutCreateWindow("Hello World GL");
 	// Asociamos una función de render.
