@@ -16,7 +16,12 @@ Autor: A01373179 Maria Fernanda Cruz Gonzalez
 Mesh _mesh;
 ShaderProgram _shaderProgram;
 Transform _transform;
+Transform _transform2;
+Transform _transform3;
+Transform _transform4;
+Transform _transform5;
 Camera _camera; //camera 3D
+float contador;
 
 void Initialize()
 {
@@ -104,19 +109,19 @@ void Initialize()
 	colors.push_back(glm::vec3(1.0f, 1.0f, 0.0f));
 	colors.push_back(glm::vec3(1.0f, 1.0f, 0.0f));
 
-	colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-	colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-	colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-	colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-	colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-	colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
+	colors.push_back(glm::vec3(1.0f, 0.0f, 1.0f));
+	colors.push_back(glm::vec3(1.0f, 0.0f, 1.0f));
+	colors.push_back(glm::vec3(1.0f, 0.0f, 1.0f));
+	colors.push_back(glm::vec3(1.0f, 0.0f, 1.0f));
+	colors.push_back(glm::vec3(1.0f, 0.0f, 1.0f));
+	colors.push_back(glm::vec3(1.0f, 0.0f, 1.0f));
 
-	colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
-	colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
-	colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
-	colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
-	colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
-	colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
+	colors.push_back(glm::vec3(1.0f, 0.549f, 0.0f));
+	colors.push_back(glm::vec3(1.0f, 0.549f, 0.0f));
+	colors.push_back(glm::vec3(1.0f, 0.549f, 0.0f));
+	colors.push_back(glm::vec3(1.0f, 0.549f, 0.0f));
+	colors.push_back(glm::vec3(1.0f, 0.549f, 0.0f));
+	colors.push_back(glm::vec3(1.0f, 0.549f, 0.0f));
 
 	colors.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
 	colors.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
@@ -151,26 +156,52 @@ void Initialize()
 	_shaderProgram.SetAttribute(1, "VertexColor");
 	_shaderProgram.LinkProgram();
 	//_camera.SetOrthigraphic(4.0f,4.0f);
-	_camera.MoveForward(15.0f);
+	//_camera.MoveForward(30.0f);
 	//_transform.SetRotation(0.0f,0.0f, 90.0f);
+	_transform2.MoveUp(-5.0f, true);
+	_transform2.SetScale(15.0f, 0.5f, 15.0f);
+	_transform3.SetPosition(20, 0, -20);
+	_transform4.SetPosition(20, 6, -20);
+	_transform.SetPosition(-20, 0, -20);
+	_transform5.SetPosition(-20, 0, 20);
+	contador = 0;
 }
 
 void GameLoop()
 {
+	contador = contador + 0.002;
+	float contadorx = sin(contador);
+	float contadory = cos(contador);
+	float contadorz = contadorx*contadory;
+	glClearColor(contadorx, contadory, contadorz, 0.0f);
 	// Limpiamos el buffer de color y el buffer de profunidad.
 	// Siempre hacerlo al inicio del frame
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//_camera.MoveForward(-0.0001f);
 
-	//_transform.Rotate(0.0f, 0.01f, 0.0f, false);//a lo largo de los ejes locales
-	_transform.Rotate(0.01f, 0.01f, 0.01f, true);//a lo largo de los ejes globales
+	_transform.Rotate(0.01f, 0.0f, 0.0f, false);//a lo largo de los ejes locales
+	//_transform2.Rotate(0.01f, 0.01f, 0.01f, true);//a lo largo de los ejes globales
+	_transform3.Rotate(0.0f, 0.01f, 0.0f, false);//a lo largo de los ejes locales
+	_transform4.Rotate(0.0f, -0.01f, 0.0f, false);//a lo largo de los ejes locales
+	_transform5.Rotate(0.0f, 0.00f, 0.01f, false);//a lo largo de los ejes locales
+	
 	
 
 	_shaderProgram.Activate();
 	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform.GetModelMatrix());
 //	_shaderProgram.SetUniformMatrix("modelMatrix", _transform.GetModelMatrix());
 	_mesh.Draw(GL_TRIANGLES);
+
+	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform2.GetModelMatrix());
+	_mesh.Draw(GL_TRIANGLES);
+	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform3.GetModelMatrix());
+	_mesh.Draw(GL_TRIANGLES);
+	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform4.GetModelMatrix());
+	_mesh.Draw(GL_TRIANGLES);
+	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform5.GetModelMatrix());
+	_mesh.Draw(GL_TRIANGLES);
+	_camera.Rotate(0.0f, 0.01f, 0.0f, true);
 	_shaderProgram.Deactivate();
 
 	// Cuando terminamos de renderear, cambiamos los buffers.
@@ -206,13 +237,13 @@ int main(int argc, char* argv[])
 	glutInitContextProfile(GLUT_CORE_PROFILE);
 	// Freeglut nos permite configurar eventos que ocurren en la ventana.
 	// Un evento que nos interesa es cuando alguien cierra la ventana.
-	// En este caso, simplemente dejamos de renderear la esscena y terminamos el programa.
+	// En este caso, simplemente dejamos de renderear la esscena y terminamos el programa.   
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
 	// Configuramos el framebuffer. En este caso estamos solicitando un buffer
 	// true color RGBA, un buffer de profundidad y un segundo buffer para renderear.
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
 	// Iniciar las dimensiones de la ventana (en pixeles)
-	glutInitWindowSize(600, 600);
+	glutInitWindowSize(1920, 1080);
 	// Creamos la ventana y le damos un título.
 	glutCreateWindow("Hello World GL");
 	// Asociamos una función de render.

@@ -34,4 +34,4 @@ private:
 	GLint _vertexCount;
 	GLuint _indicesBufferObject;
 	GLint _indicesCount;
-};
+};  

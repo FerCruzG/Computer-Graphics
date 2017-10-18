@@ -30,7 +30,7 @@ void Shader::CreateShader(std::string path, GLenum type){
 
 	glCompileShader(_ShaderHandle);
 }
-
+  
 GLuint Shader::GetHandle(){
 	return _ShaderHandle;
 }

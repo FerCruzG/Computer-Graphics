@@ -74,7 +74,7 @@ void Mesh::SetAttributeData(GLuint & buffer, const GLsizeiptr size, const void *
 
 	glGenBuffers(1, &buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glBufferData(GL_ARRAY_BUFFER, size, data, usage);
+	glBufferData(GL_ARRAY_BUFFER, size, data, usage);   
 	glEnableVertexAttribArray(locationIndex);
 	glVertexAttribPointer(locationIndex, components, GL_FLOAT, GL_FALSE, 0, nullptr);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);

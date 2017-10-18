@@ -15,7 +15,7 @@ ShaderProgram::ShaderProgram(){
 
 ShaderProgram::~ShaderProgram(){
 	DeleteProgram();
-
+	  
 }
 
 void ShaderProgram::CreateProgram(){
