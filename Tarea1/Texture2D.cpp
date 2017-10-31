@@ -14,7 +14,7 @@ Texture2D::Texture2D() {
 	imageID;
 }
 
-Texture2D::~Texture2D() {
+Texture2D::~Texture2D() {//¿?
 	
 }
 
