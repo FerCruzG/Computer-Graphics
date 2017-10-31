@@ -23,6 +23,7 @@ public:
 	void Activate();
 	void Deactivate();
 	void SetAttribute(GLuint locationIndex, std::string name);
+	void SetUniformi(std::string name, int value);
 	void SetUniformf(std::string name, float value);
 	void SetUniformf(std::string name, float x, float y);
 	void SetUniformf(std::string name, float x, float y, float z);

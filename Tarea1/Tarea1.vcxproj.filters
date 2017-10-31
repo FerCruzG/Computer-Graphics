@@ -51,6 +51,12 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
+    <ClCompile Include="MainExamen2.cpp">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture2D.cpp">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rectangle.h">
@@ -80,6 +86,9 @@
     <ClInclude Include="Camera.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="Texture2D.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Default.vert">
@@ -102,5 +111,10 @@
     <Text Include="palmera.txt">
       <Filter>Archivos de recursos</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="caja.jpg">
+      <Filter>Archivos de código fuente</Filter>
+    </Image>
   </ItemGroup>
 </Project>
