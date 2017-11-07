@@ -23,7 +23,6 @@ Transform _transform2;
 Camera _camera; //camera 3D
 Texture2D _texture;
 Texture2D _texture1;
-Texture2D _texture2;
 
 void Initialize(){
 
@@ -37,7 +36,6 @@ void Initialize(){
 	std::vector<glm::vec2> texturas;
 	_texture.LoadTexture("caja.jpg");
 	_texture1.LoadTexture("cuadros.jpg");
-	//_texture2.LoadTexture("cerdito.jpg");
 
 	
 	//adelante
@@ -129,8 +127,6 @@ void Initialize(){
 	normals.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
 	normals.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
 
-
-
 	texturas.push_back(glm::vec2(0.0f, 0.0f));
 	texturas.push_back(glm::vec2(1.0f, 1.0f));
 	texturas.push_back(glm::vec2(0.0f, 1.0f));
@@ -196,10 +192,6 @@ void Initialize(){
 
 	// Arreglo de colores en el cpu
 	std::vector<glm::vec3> colors;
-	colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-	colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-	colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-	colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
 	//colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
 	//colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
 
@@ -248,15 +240,21 @@ void GameLoop(){
 	_shaderProgram.SetUniformf("pcamaray", _camera.GetPosition()[1]);
 	_shaderProgram.SetUniformf("pcamaraz", _camera.GetPosition()[2]);
 	_shaderProgram.SetUniformi("DiffuseTexture", 0);
-	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform.GetModelMatrix());
+	
+	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform.GetModelMatrix());	
 	glActiveTexture(GL_TEXTURE0);
 	_texture.Bind();
 	_mesh.Draw(GL_TRIANGLES);
-	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform2.GetModelMatrix());
-	_mesh.Draw(GL_TRIANGLES);
-	_shaderProgram.Deactivate();
 	glActiveTexture(GL_TEXTURE0);
 	_texture.Unbind();
+
+	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform2.GetModelMatrix());
+	glActiveTexture(GL_TEXTURE0);
+	_texture1.Bind();
+	_mesh.Draw(GL_TRIANGLES);
+	glActiveTexture(GL_TEXTURE0);
+	_texture1.Unbind();
+	_shaderProgram.Deactivate();
 
 	// Cuando terminamos de renderear, cambiamos los buffers.
 	glutSwapBuffers();
