@@ -14,6 +14,7 @@ Autor: A01373179 Maria Fernanda Cruz Gonzalez
 #include "Transform.h"
 #include "Camera.h"
 #include "Texture2D.h"
+#include <IL/il.h>
 
 Mesh _mesh;
 ShaderProgram _shaderProgram;
@@ -21,12 +22,12 @@ Transform _transform;
 Transform _transform2;
 Camera _camera; //camera 3D
 Texture2D _texture;
-
+Texture2D _texture1;
+Texture2D _texture2;
 
 void Initialize(){
 
 	// Creando toda la memoria que el programa va a utilizar.
-
 	// Creación del atributo de posiciones de los vértices.
 	// Lista de vec2
 	// Claramente en el CPU y RAM
@@ -35,9 +36,10 @@ void Initialize(){
 	std::vector<unsigned int> indices;
 	std::vector<glm::vec2> texturas;
 	_texture.LoadTexture("caja.jpg");
-	//_texture.LoadTexture("C:/Users/Fer/Documents/TEC/caja.jpg");
-	
+	_texture1.LoadTexture("cuadros.jpg");
+	//_texture2.LoadTexture("cerdito.jpg");
 
+	
 	//adelante
 	positions.push_back(glm::vec3(-3.0f, -3.0f, 3.0f));
 	positions.push_back(glm::vec3(3.0f, 3.0f, 3.0f));
@@ -75,6 +77,7 @@ void Initialize(){
 	normals.push_back(glm::vec3(-1.0f, 0.0f, 0.0f));
 	normals.push_back(glm::vec3(-1.0f, 0.0f, 0.0f));
 
+
 	texturas.push_back(glm::vec2(0.0f, 0.0f));
 	texturas.push_back(glm::vec2(1.0f, 1.0f));
 	texturas.push_back(glm::vec2(0.0f, 1.0f));
@@ -100,10 +103,11 @@ void Initialize(){
 	normals.push_back(glm::vec3(0.0f, 0.0f, -1.0f));
 	normals.push_back(glm::vec3(0.0f, 0.0f, -1.0f));
 
+
 	texturas.push_back(glm::vec2(0.0f, 0.0f));
-	texturas.push_back(glm::vec2(1.0f, 1.0f));
-	texturas.push_back(glm::vec2(0.0f, 1.0f));
 	texturas.push_back(glm::vec2(1.0f, 0.0f));
+	texturas.push_back(glm::vec2(0.0f, 1.0f));
+	texturas.push_back(glm::vec2(1.0f, 1.0f));
 
 	indices.push_back(8);
 	indices.push_back(9);
@@ -124,6 +128,8 @@ void Initialize(){
 	normals.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
 	normals.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
 	normals.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+
+
 
 	texturas.push_back(glm::vec2(0.0f, 0.0f));
 	texturas.push_back(glm::vec2(1.0f, 1.0f));
@@ -151,9 +157,9 @@ void Initialize(){
 	normals.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
 
 	texturas.push_back(glm::vec2(0.0f, 0.0f));
-	texturas.push_back(glm::vec2(1.0f, 1.0f));
-	texturas.push_back(glm::vec2(0.0f, 1.0f));
 	texturas.push_back(glm::vec2(1.0f, 0.0f));
+	texturas.push_back(glm::vec2(0.0f, 1.0f));
+	texturas.push_back(glm::vec2(1.0f, 1.0f));
 
 	indices.push_back(16);
 	indices.push_back(17);
@@ -176,8 +182,8 @@ void Initialize(){
 	normals.push_back(glm::vec3(0.0f, -1.0f, 0.0f));
 
 	texturas.push_back(glm::vec2(0.0f, 0.0f));
-	texturas.push_back(glm::vec2(1.0f, 1.0f));
 	texturas.push_back(glm::vec2(0.0f, 1.0f));
+	texturas.push_back(glm::vec2(1.0f, 1.0f));
 	texturas.push_back(glm::vec2(1.0f, 0.0f));
 
 	indices.push_back(20);
@@ -196,48 +202,6 @@ void Initialize(){
 	colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
 	//colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
 	//colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-
-	colors.push_back(glm::vec3(1.0f, 1.0f, 0.0f));
-	colors.push_back(glm::vec3(1.0f, 1.0f, 0.0f));
-	colors.push_back(glm::vec3(1.0f, 1.0f, 0.0f));
-	colors.push_back(glm::vec3(1.0f, 1.0f, 0.0f));
-	//colors.push_back(glm::vec3(1.0f, 1.0f, 0.0f));
-	//colors.push_back(glm::vec3(1.0f, 1.0f, 0.0f));
-
-	colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-	colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-	colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-	colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-	//colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-	//colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-
-	colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
-	colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
-	colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
-	colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
-	//colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
-	//colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
-
-	colors.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
-	colors.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
-	colors.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
-	colors.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
-	//colors.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
-	//colors.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
-
-	colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
-	colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
-	colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
-	colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
-	//colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
-	//colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
-
-	/*colors.push_back(glm::vec3(1.0f, 1.0f, 0.0f));
-	colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-	colors.push_back(glm::vec3(1.0f, 0.0f, 1.0f));
-	colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));
-	colors.push_back(glm::vec3(0.0f, 1.0f, 1.0f));
-	colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));*/
 
 	_mesh.SetIndices(indices, GL_STATIC_DRAW);
 	_mesh.CreateMesh(24);
@@ -261,10 +225,11 @@ void Initialize(){
 	_transform2.SetScale(10, 0.5f, 10);
 	_transform2.MoveUp(-10, true);
 	//_transform.SetRotation(0.0f,0.0f, 90.0f);
+
+	/**/
 }
 
-void GameLoop()
-{
+void GameLoop(){
 
 	// Limpiamos el buffer de color y el buffer de profunidad.
 	// Siempre hacerlo al inicio del frame
@@ -274,7 +239,6 @@ void GameLoop()
 
 	//_transform.Rotate(0.0f, 0.01f, 0.0f, false);//a lo largo de los ejes locales
 	_transform.Rotate(0.01f, 0.01f, 0.01f, true);//a lo largo de los ejes globales
-
 
 	_shaderProgram.Activate();
 	_shaderProgram.SetUniformf("pluzx", 0);
@@ -298,8 +262,7 @@ void GameLoop()
 	glutSwapBuffers();
 }
 
-void Idle()
-{
+void Idle(){
 	// Cuando OpenGL entra en modo de reposo 
 	// (para guardar bateria, por ejemplo)
 	// le decimos que vuelva a dibujar ->
@@ -307,13 +270,11 @@ void Idle()
 	glutPostRedisplay();
 }
 
-void ReshapeWindow(int width, int height)
-{
+void ReshapeWindow(int width, int height){
 	glViewport(0, 0, width, height);
 }
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]){
 	// Inicializar freeglut
 	// Freeglut se encarga de crear una ventana
 	// en donde podemos dibujar
@@ -350,6 +311,10 @@ int main(int argc, char* argv[])
 	// Inicializar GLEW. Esta librería se encarga de obtener el API de OpenGL de
 	// nuestra tarjeta de video. SHAME ON YOU MICROSOFT.
 	glewInit();
+	ilInit();
+	ilEnable(IL_ORIGIN_SET);
+	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+	
 
 	// Configurar OpenGL. Este es el color por default del buffer de color
 	// en el framebuffer.

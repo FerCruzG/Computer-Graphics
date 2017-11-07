@@ -116,5 +116,11 @@
     <Image Include="caja.jpg">
       <Filter>Archivos de código fuente</Filter>
     </Image>
+    <Image Include="cuadros.jpg">
+      <Filter>Archivos de código fuente</Filter>
+    </Image>
+    <Image Include="cerdito.jpg">
+      <Filter>Archivos de código fuente</Filter>
+    </Image>
   </ItemGroup>
 </Project>

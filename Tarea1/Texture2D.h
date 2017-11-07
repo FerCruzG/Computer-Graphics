@@ -16,6 +16,4 @@ public:
 	
 private:
 	GLuint _textureId;
-	ILuint imageID;
-
 };
