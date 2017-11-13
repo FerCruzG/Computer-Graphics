@@ -119,6 +119,7 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Circle.cpp" />
+    <ClCompile Include="Depthbuffer.cpp" />
     <ClCompile Include="Employee.cpp" />
     <ClCompile Include="InputFile.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -134,6 +135,7 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Circle.h" />
+    <ClInclude Include="Depthbuffer.h" />
     <ClInclude Include="Employee.h" />
     <ClInclude Include="InputFile.h" />
     <ClInclude Include="Mesh.h" />
@@ -146,8 +148,8 @@
   <ItemGroup>
     <None Include="Default.frag" />
     <None Include="Default.vert" />
-    <None Include="DisardCenter.vert" />
-    <None Include="DiscardCenter.frag" />
+    <None Include="Depth.vert" />
+    <None Include="Depth.frag" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="palmera.txt" />

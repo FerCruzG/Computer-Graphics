@@ -57,6 +57,9 @@
     <ClCompile Include="Texture2D.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
+    <ClCompile Include="Depthbuffer.cpp">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rectangle.h">
@@ -89,6 +92,9 @@
     <ClInclude Include="Texture2D.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="Depthbuffer.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Default.vert">
@@ -97,10 +103,10 @@
     <None Include="Default.frag">
       <Filter>Archivos de código fuente\Shaders</Filter>
     </None>
-    <None Include="DiscardCenter.frag">
+    <None Include="Depth.vert">
       <Filter>Archivos de código fuente\Shaders</Filter>
     </None>
-    <None Include="DisardCenter.vert">
+    <None Include="Depth.frag">
       <Filter>Archivos de código fuente\Shaders</Filter>
     </None>
   </ItemGroup>

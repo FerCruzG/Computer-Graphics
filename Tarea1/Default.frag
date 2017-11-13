@@ -5,6 +5,7 @@ in vec3 pposition;
 in mat3  NormalMatrix;
 in vec3 normal;
 in vec2 InterpolatedTexCoord;
+in vec4 PixelPositionLightSpace;
 
 uniform float pluzx;
 uniform float pluzy;
@@ -14,10 +15,29 @@ uniform sampler2D DiffuseTexture;
 uniform float pcamarax;
 uniform float pcamaray;
 uniform float pcamaraz;
+uniform sampler2D ShadowMap;
+
 
 out vec4 FragColor;
-void main()
-{
+
+float IsPixelOccluded(vec4 fragPosLightSpace){
+
+//Correccion de persepectiva. Coordenadas entre [-1,1] = Normalized Device Space
+//vec3 projCoords = fragPosLightSpace.xyz/fragPosLightSpace.w;
+
+//Transformar projCoords al rango[0,1](projCoords * 0.5 + 0.5)
+// Muestrear el mapa de profundidad usando projCoords.xy como coordenadas de textura.
+// Con esto obtenemos la profundidad del pixel en el primer render (desde la luz).
+float closestDepth = texture2D(ShadowMap, projCoords.xy).r;
+
+// La profundidad del pixel desde la actual cámara (ya transformado) está en projCoords.z
+// Si la profundidad del render actual es mayor a closestDepth, regresar 1.0f
+// De lo contrario, regresar 0.0f
+float shadow = currentDepth - 0.005f > closestDepth ? 1.0f : 0.0f;
+return shadow;
+}
+
+void main(){
 	vec3 interpolatedNormal =  NormalMatrix * normal;
 	vec3 pluz = vec3(pluzx,pluzy,pluzz);
 	vec3 pcamara = vec3(pcamarax,pcamaray,pcamaraz);
@@ -30,4 +50,7 @@ void main()
 	vec3 specular = 0.5f*dot(v,r)*lightColor;
 	vec4 phong = vec4((ambient + diffuse + specular),0.0f)* texture2D(DiffuseTexture, InterpolatedTexCoord);
 	FragColor = vec4(phong);	
+
+	float shadow = IsPixelOccluded(PixelPositionLightSpacec);
+	vec3 phong = (ambient + (1.0-shadow)*(diffuse + specular))*InterpolatedColor;
 }
