@@ -17,7 +17,7 @@ public:
 	void UnbindDepthMap();
 
 private:
-	GLuint _framebuffer =0;	//id del framebuffer
-	GLuint _depthmap = 0;	//id de la textura
-	GLsizei _resolution = 0;//resolucion de la textura
+	GLuint _framebuffer;	//id del framebuffer
+	GLuint _depthmap;	//id de la textura
+	GLsizei _resolution;//resolucion de la textura
 };
