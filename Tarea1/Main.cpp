@@ -36,7 +36,6 @@ void Initialize(){
 	std::vector<glm::vec2> texturas;
 	_texture.LoadTexture("caja.jpg");
 	_texture1.LoadTexture("cuadros.jpg");
-
 	
 	//adelante
 	positions.push_back(glm::vec3(-3.0f, -3.0f, 3.0f));
@@ -44,8 +43,6 @@ void Initialize(){
 	positions.push_back(glm::vec3(-3.0f, 3.0f, 3.0f));
 	positions.push_back(glm::vec3(3.0f, -3.0f, 3.0f));
 
-	//positions.push_back(glm::vec3(3.0f, 3.0f, 3.0f));
-	//positions.push_back(glm::vec3(-3.0f, -3.0f, 3.0f));
 	normals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
 	normals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
 	normals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
@@ -68,13 +65,11 @@ void Initialize(){
 	positions.push_back(glm::vec3(-3.0f, -3.0f, -3.0f));
 	positions.push_back(glm::vec3(-3.0f, -3.0f, 3.0f));
 	positions.push_back(glm::vec3(-3.0f, 3.0f, -3.0f));
-	//positions.push_back(glm::vec3(-3.0f, -3.0f, -3.0f));
-	//positions.push_back(glm::vec3(-3.0f, 3.0f, 3.0f));
+	
 	normals.push_back(glm::vec3(-1.0f, 0.0f, 0.0f));
 	normals.push_back(glm::vec3(-1.0f, 0.0f, 0.0f));
 	normals.push_back(glm::vec3(-1.0f, 0.0f, 0.0f));
 	normals.push_back(glm::vec3(-1.0f, 0.0f, 0.0f));
-
 
 	texturas.push_back(glm::vec2(0.0f, 0.0f));
 	texturas.push_back(glm::vec2(1.0f, 1.0f));
@@ -92,15 +87,12 @@ void Initialize(){
 	positions.push_back(glm::vec3(-3.0f, 3.0f, -3.0f));
 	positions.push_back(glm::vec3(3.0f, 3.0f, -3.0f));
 	positions.push_back(glm::vec3(-3.0f, -3.0f, -3.0f));
-	//positions.push_back(glm::vec3(-3.0f, -3.0f, -3.0f));
-	//positions.push_back(glm::vec3(3.0f, 3.0f, -3.0f));
 	positions.push_back(glm::vec3(3.0f, -3.0f, -3.0f));
 
 	normals.push_back(glm::vec3(0.0f, 0.0f, -1.0f));
 	normals.push_back(glm::vec3(0.0f, 0.0f, -1.0f));
 	normals.push_back(glm::vec3(0.0f, 0.0f, -1.0f));
 	normals.push_back(glm::vec3(0.0f, 0.0f, -1.0f));
-
 
 	texturas.push_back(glm::vec2(0.0f, 0.0f));
 	texturas.push_back(glm::vec2(1.0f, 0.0f));
@@ -119,8 +111,6 @@ void Initialize(){
 	positions.push_back(glm::vec3(3.0f, 3.0f, 3.0f));
 	positions.push_back(glm::vec3(3.0f, -3.0f, 3.0f));
 	positions.push_back(glm::vec3(3.0f, 3.0f, -3.0f));
-	//positions.push_back(glm::vec3(3.0f, 3.0f, 3.0f));
-	//positions.push_back(glm::vec3(3.0f, -3.0f, -3.0f));
 
 	normals.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
 	normals.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
@@ -143,8 +133,6 @@ void Initialize(){
 	positions.push_back(glm::vec3(-3.0f, 3.0f, -3.0f));
 	positions.push_back(glm::vec3(-3.0f, 3.0f, 3.0f));
 	positions.push_back(glm::vec3(3.0f, 3.0f, -3.0f));
-	//positions.push_back(glm::vec3(3.0f, 3.0f, -3.0f));
-	//positions.push_back(glm::vec3(-3.0f, 3.0f, 3.0f));
 	positions.push_back(glm::vec3(3.0f, 3.0f, 3.0f));
 
 	normals.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
@@ -168,9 +156,7 @@ void Initialize(){
 	positions.push_back(glm::vec3(-3.0f, -3.0f, 3.0f));
 	positions.push_back(glm::vec3(-3.0f, -3.0f, -3.0f));
 	positions.push_back(glm::vec3(3.0f, -3.0f, -3.0f));
-	//positions.push_back(glm::vec3(3.0f, -3.0f, -3.0f));
 	positions.push_back(glm::vec3(3.0f, -3.0f, 3.0f));
-	//positions.push_back(glm::vec3(-3.0f, -3.0f, 3.0f));
 
 	normals.push_back(glm::vec3(0.0f, -1.0f, 0.0f));
 	normals.push_back(glm::vec3(0.0f, -1.0f, 0.0f));
@@ -189,11 +175,8 @@ void Initialize(){
 	indices.push_back(23);
 	indices.push_back(20);
 
-
 	// Arreglo de colores en el cpu
 	std::vector<glm::vec3> colors;
-	//colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-	//colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
 
 	_mesh.SetIndices(indices, GL_STATIC_DRAW);
 	_mesh.CreateMesh(24);
@@ -311,8 +294,7 @@ int main(int argc, char* argv[]){
 	glewInit();
 	ilInit();
 	ilEnable(IL_ORIGIN_SET);
-	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
-	
+	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);	
 
 	// Configurar OpenGL. Este es el color por default del buffer de color
 	// en el framebuffer.
@@ -334,6 +316,5 @@ int main(int argc, char* argv[]){
 	// Iniciar la aplicación. El main se pausará en esta línea hasta que se cierre
 	// la venta de OpenGL.
 	glutMainLoop();
-
 	return 0;
 }

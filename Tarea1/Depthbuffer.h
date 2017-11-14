@@ -18,6 +18,6 @@ public:
 
 private:
 	GLuint _framebuffer;	//id del framebuffer
-	GLuint _depthmap;	//id de la textura
-	GLsizei _resolution;//resolucion de la textura
+	GLuint _depthmap;		//id de la textura
+	GLsizei _resolution;	//resolucion de la textura
 };

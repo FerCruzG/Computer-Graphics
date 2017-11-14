@@ -5,7 +5,6 @@ in vec3 VertexColor;
 in vec3 VertexNormal;
 in vec2 VertexTexCoord;
 
-
 out vec3 InterpolatedColor;
 out vec3 pposition;
 out mat3 NormalMatrix;
@@ -23,6 +22,5 @@ void main(){
 	gl_Position = mvpMatrix * vec4(VertexPosition, 1.0f);
 	normal = VertexNormal;
 	InterpolatedTexCoord = VertexTexCoord;
-
-	PixelPositionLightSpace = LightVPMatrix * vec4(PixelPosition, 1.0);
+	PixelPositionLightSpace = LightVPMatrix * vec4(pposition, 1.0);
 }
