@@ -15,14 +15,22 @@ Autor: A01373179 Maria Fernanda Cruz Gonzalez
 #include "Camera.h"
 #include "Texture2D.h"
 #include <IL/il.h>
+#include "Depthbuffer.h"
 
 Mesh _mesh;
 ShaderProgram _shaderProgram;
+ShaderProgram _shaderProgramDepth;
+
 Transform _transform;
 Transform _transform2;
+
 Camera _camera; //camera 3D
+Camera _cameraLuz;
+
 Texture2D _texture;
 Texture2D _texture1;
+
+Depthbuffer _depthBuffer;
 
 void Initialize(){
 
@@ -34,6 +42,7 @@ void Initialize(){
 	std::vector<glm::vec3> normals;
 	std::vector<unsigned int> indices;
 	std::vector<glm::vec2> texturas;
+	std::vector<glm::vec3> colors;		// Arreglo de colores en el cpu
 	_texture.LoadTexture("caja.jpg");
 	_texture1.LoadTexture("cuadros.jpg");
 	
@@ -175,8 +184,8 @@ void Initialize(){
 	indices.push_back(23);
 	indices.push_back(20);
 
-	// Arreglo de colores en el cpu
-	std::vector<glm::vec3> colors;
+	//Creación del buffer de profundidad con resolucion 2048px
+	_depthBuffer.Create(2048);
 
 	_mesh.SetIndices(indices, GL_STATIC_DRAW);
 	_mesh.CreateMesh(24);
@@ -187,34 +196,57 @@ void Initialize(){
 	_mesh.SetTexCoordAttribute(texturas, GL_STATIC_DRAW, 3);
 
 	_shaderProgram.CreateProgram();
+	_shaderProgramDepth.CreateProgram();
 	_shaderProgram.AttachShader("Default.vert", GL_VERTEX_SHADER);
 	_shaderProgram.AttachShader("Default.frag", GL_FRAGMENT_SHADER);
+	_shaderProgramDepth.AttachShader("Depth.vert", GL_VERTEX_SHADER);
+	_shaderProgramDepth.AttachShader("Depth.frag", GL_FRAGMENT_SHADER);
+
 	_shaderProgram.SetAttribute(0, "VertexPosition");
 	_shaderProgram.SetAttribute(1, "VertexColor");
 	_shaderProgram.SetAttribute(2, "VertexNormal");
 	_shaderProgram.SetAttribute(3, "VertexTexCoord");
+
+	_shaderProgramDepth.SetAttribute(0, "VertexPosition");
 	
 	_shaderProgram.LinkProgram();
+	_shaderProgramDepth.LinkProgram();
 	//_camera.SetOrthigraphic(4.0f,4.0f);
 	_camera.MoveForward(25.0f);
+	
+	//Configuración de una segunda cámara en la posición de la luz
+	_cameraLuz.SetOrthigraphic(25.0f,1.0f);
+	_cameraLuz.SetPosition(0, 3, 0);
+	//_cameraLuz.Pitch(-90);
+
 	_transform2.SetScale(10, 0.5f, 10);
 	_transform2.MoveUp(-10, true);
 	//_transform.SetRotation(0.0f,0.0f, 90.0f);
-
-	/**/
 }
 
 void GameLoop(){
 
+	_transform.Rotate(0.01f, 0.01f, 0.01f, true);//a lo largo de los ejes globales
+	_depthBuffer.Bind();	
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	_shaderProgramDepth.Activate();
+	_shaderProgramDepth.SetUniformMatrix("mvpMatrix", _cameraLuz.GetViewProjection()* _transform.GetModelMatrix());
+	_mesh.Draw(GL_TRIANGLES);
+	_shaderProgramDepth.SetUniformMatrix("mvpMatrix", _cameraLuz.GetViewProjection()* _transform2.GetModelMatrix());
+	_mesh.Draw(GL_TRIANGLES);
+
+	_depthBuffer.Unbind();
+	glViewport(0, 0, glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
+	_shaderProgramDepth.Deactivate();
+	
 	// Limpiamos el buffer de color y el buffer de profunidad.
 	// Siempre hacerlo al inicio del frame
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//_camera.MoveForward(-0.0001f);
-
 	//_transform.Rotate(0.0f, 0.01f, 0.0f, false);//a lo largo de los ejes locales
-	_transform.Rotate(0.01f, 0.01f, 0.01f, true);//a lo largo de los ejes globales
-
+	
 	_shaderProgram.Activate();
 	_shaderProgram.SetUniformf("pluzx", 0);
 	_shaderProgram.SetUniformf("pluzy", 5);
@@ -223,20 +255,33 @@ void GameLoop(){
 	_shaderProgram.SetUniformf("pcamaray", _camera.GetPosition()[1]);
 	_shaderProgram.SetUniformf("pcamaraz", _camera.GetPosition()[2]);
 	_shaderProgram.SetUniformi("DiffuseTexture", 0);
+	_shaderProgram.SetUniformi("ShadowMap", 1);
 	
 	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform.GetModelMatrix());	
+	_shaderProgram.SetUniformMatrix("ModelMatrix", _transform.GetModelMatrix());
+	_shaderProgram.SetUniformMatrix("LightVPMatrix", _cameraLuz.GetViewProjection());
 	glActiveTexture(GL_TEXTURE0);
 	_texture.Bind();
+	glActiveTexture(GL_TEXTURE1);
+	_depthBuffer.BindDepthMap();
 	_mesh.Draw(GL_TRIANGLES);
 	glActiveTexture(GL_TEXTURE0);
 	_texture.Unbind();
+	glActiveTexture(GL_TEXTURE1);
+	_depthBuffer.UnbindDepthMap();
 
 	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform2.GetModelMatrix());
+	_shaderProgram.SetUniformMatrix("ModelMatrix", _transform2.GetModelMatrix());
+	_shaderProgram.SetUniformMatrix("LightVPMatrix", _cameraLuz.GetViewProjection());
 	glActiveTexture(GL_TEXTURE0);
 	_texture1.Bind();
+	glActiveTexture(GL_TEXTURE1);
+	_depthBuffer.BindDepthMap();
 	_mesh.Draw(GL_TRIANGLES);
 	glActiveTexture(GL_TEXTURE0);
 	_texture1.Unbind();
+	glActiveTexture(GL_TEXTURE1);
+	_depthBuffer.UnbindDepthMap();
 	_shaderProgram.Deactivate();
 
 	// Cuando terminamos de renderear, cambiamos los buffers.

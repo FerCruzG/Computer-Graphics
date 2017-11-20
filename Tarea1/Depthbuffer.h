@@ -4,7 +4,7 @@
 #include <glm/glm.hpp>
 #include <vector>
 #include <IL/il.h>
-
+#include <GL/glew.h>
 
 class Depthbuffer {
 public:

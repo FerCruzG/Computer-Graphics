@@ -14,8 +14,7 @@ ShaderProgram::ShaderProgram(){
 }
 
 ShaderProgram::~ShaderProgram(){
-	DeleteProgram();
-	  
+	DeleteProgram();	  
 }
 
 void ShaderProgram::CreateProgram(){
@@ -43,8 +42,7 @@ void ShaderProgram::LinkProgram(){
 		GLint logLength = 0;
 		glGetProgramiv(_programHandle, GL_INFO_LOG_LENGTH, &logLength);
 
-		if (logLength > 0)
-		{
+		if (logLength > 0){
 			// Allocate memory for link log
 			std::vector<GLchar> linkLog(logLength);
 
@@ -60,10 +58,8 @@ void ShaderProgram::LinkProgram(){
 
 		// Delete and detach shaders; delte program handle
 		DeleteProgram();
-
 		return;
 	}
-
 	std::cout << "Build succeeded... " << std::endl;
 
 	DeleteAndDetachShaders();
@@ -114,7 +110,6 @@ void ShaderProgram::SetUniformMatrix(std::string name, glm::mat3 matrix){
 void ShaderProgram::SetUniformMatrix(std::string name, glm::mat4 matrix){
 	GLint uniformLocation = glGetUniformLocation(_programHandle, name.c_str());
 	glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(matrix));
-
 }
 
 void ShaderProgram::DeleteAndDetachShaders(){

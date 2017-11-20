@@ -97,16 +97,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Default.vert">
-      <Filter>Archivos de código fuente\Shaders</Filter>
-    </None>
-    <None Include="Default.frag">
+    <None Include="Depth.frag">
       <Filter>Archivos de código fuente\Shaders</Filter>
     </None>
     <None Include="Depth.vert">
       <Filter>Archivos de código fuente\Shaders</Filter>
     </None>
-    <None Include="Depth.frag">
+    <None Include="Default.vert">
+      <Filter>Archivos de código fuente\Shaders</Filter>
+    </None>
+    <None Include="Default.frag">
       <Filter>Archivos de código fuente\Shaders</Filter>
     </None>
   </ItemGroup>

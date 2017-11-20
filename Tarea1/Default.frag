@@ -22,10 +22,8 @@ out vec4 FragColor;
 float IsPixelOccluded(vec4 fragPosLightSpace){
 
 //Correccion de persepectiva. Coordenadas entre [-1,1] = Normalized Device Space
-vec3 projCoords = fragPosLightSpace.xyz/fragPosLightSpace.w;
-
 //Transformar projCoords al rango[0,1](projCoords * 0.5 + 0.5)
-projCoords = projCoords * 0.5 + 0.5;
+vec3 projCoords = (fragPosLightSpace.xyz/fragPosLightSpace.w)* 0.5f + 0.5f;
 
 // Muestrear el mapa de profundidad usando projCoords.xy como coordenadas de textura.
 // Con esto obtenemos la profundidad del pixel en el primer render (desde la luz).
@@ -41,20 +39,18 @@ return shadow;
 }
 
 void main(){
-	vec3 interpolatedNormal =  NormalMatrix * normal;
+	float shadow = IsPixelOccluded(PixelPositionLightSpace);
+	//vec3 interpolatedNormal =  NormalMatrix * normal;
 	vec3 pluz = vec3(pluzx,pluzy,pluzz);
 	vec3 pcamara = vec3(pcamarax,pcamaray,pcamaraz);
 	vec3 l =  normalize(pluz-pposition);
 	vec3 v =  normalize(pcamara-pposition);
-	vec3 r = reflect(-l,interpolatedNormal);
+	vec3 r = reflect(-l,normal);
 	vec3 lightColor =vec3(1.0f,1.0f,1.0f);
 	vec3 ambient = 0.1f*lightColor;
-	vec3 diffuse = dot(interpolatedNormal,l)*lightColor;
-	vec3 specular = 0.5f*dot(v,r)*lightColor;
-	vec4 phong = vec4((ambient + diffuse + specular),0.0f)* texture2D(DiffuseTexture, InterpolatedTexCoord);
+	vec3 diffuse = clamp(dot(normal,l),0,1)*lightColor;
+	//vec3 specular = pow(clamp(dot(v,r),0,1), 32)*lightColor*.5f;
+	vec3 specular = clamp(dot(v,r),0,1)*lightColor*0.5f;
+	vec4 phong = vec4((ambient + diffuse + specular),1.0f)* texture2D(DiffuseTexture, InterpolatedTexCoord);
 	FragColor = vec4(phong);	
-
-	float shadow = IsPixelOccluded(PixelPositionLightSpace);
-	//vec3 phong = (ambient + (1.0-shadow)*(diffuse + specular))*InterpolatedColor;
 }
-//'currentDepth' : undeclared identifier

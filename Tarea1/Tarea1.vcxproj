@@ -148,8 +148,8 @@
   <ItemGroup>
     <None Include="Default.frag" />
     <None Include="Default.vert" />
-    <None Include="Depth.vert" />
     <None Include="Depth.frag" />
+    <None Include="Depth.vert" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="palmera.txt" />
