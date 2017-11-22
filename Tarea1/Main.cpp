@@ -211,17 +211,14 @@ void Initialize(){
 	
 	_shaderProgram.LinkProgram();
 	_shaderProgramDepth.LinkProgram();
-	//_camera.SetOrthigraphic(4.0f,4.0f);
 	_camera.MoveForward(25.0f);
 	
 	//Configuración de una segunda cámara en la posición de la luz
-	_cameraLuz.SetOrthigraphic(25.0f,1.0f);
-	_cameraLuz.SetPosition(0, 0, 0);
+	_cameraLuz.SetOrthigraphic(35.0f,1.0f);
+	_cameraLuz.SetPosition(0, 5, 0);
 	_cameraLuz.Pitch(-90);
 
-	//_transform.SetPosition();
 	_transform2.SetScale(10, 0.5f, 10);
-	//_transform2.MoveUp(-8, true);
 	_transform2.SetPosition(0.0f,-8.0f,-4.0f);
 }
 
@@ -342,6 +339,7 @@ int main(int argc, char* argv[]){
 	// Configurar OpenGL. Este es el color por default del buffer de color
 	// en el framebuffer.
 	glClearColor(1.0f, 1.0f, 0.5f, 1.0f);
+
 	// Ademas de solicitar el buffer de profundidad, tenemos
 	// que decirle a OpenGL que lo queremos activo
 	glEnable(GL_DEPTH_TEST);
