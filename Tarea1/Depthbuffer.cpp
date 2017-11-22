@@ -1,3 +1,9 @@
+/*********************************************
+Materia: Gráficas Computacionales
+Fecha: 24 de Noviembre del 2017
+Autor: A01373179 Maria Fernanda Cruz Gonzalez
+A01373243 Jose Angel Prado Dupont
+**********************************************/
 #include "Depthbuffer.h"
 
 Depthbuffer::Depthbuffer(){
