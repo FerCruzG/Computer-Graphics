@@ -8,7 +8,7 @@ in vec2 VertexTexCoord;
 out vec3 InterpolatedColor;
 out vec3 pposition;
 out vec3 normal;
-out vec2 InterpolatedTexCoord;
+out vec2 InterpolatedTexCoord;    
 out vec4 PixelPositionLightSpace;
 out mat3 NormalMatrix;
 

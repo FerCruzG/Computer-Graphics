@@ -216,17 +216,18 @@ void Initialize(){
 	
 	//Configuración de una segunda cámara en la posición de la luz
 	_cameraLuz.SetOrthigraphic(25.0f,1.0f);
-	_cameraLuz.SetPosition(0, 3, 0);
-	//_cameraLuz.Pitch(-90);
+	_cameraLuz.SetPosition(0, 0, 0);
+	_cameraLuz.Pitch(-90);
 
+	//_transform.SetPosition();
 	_transform2.SetScale(10, 0.5f, 10);
-	_transform2.MoveUp(-10, true);
-	//_transform.SetRotation(0.0f,0.0f, 90.0f);
+	//_transform2.MoveUp(-8, true);
+	_transform2.SetPosition(0.0f,-8.0f,-4.0f);
 }
 
 void GameLoop(){
 
-	_transform.Rotate(0.01f, 0.01f, 0.01f, true);//a lo largo de los ejes globales
+	_transform.Rotate(0.04f, 0.04f, 0.04f, true);//a lo largo de los ejes globales
 	_depthBuffer.Bind();	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -243,13 +244,10 @@ void GameLoop(){
 	// Limpiamos el buffer de color y el buffer de profunidad.
 	// Siempre hacerlo al inicio del frame
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	//_camera.MoveForward(-0.0001f);
-	//_transform.Rotate(0.0f, 0.01f, 0.0f, false);//a lo largo de los ejes locales
 	
 	_shaderProgram.Activate();
 	_shaderProgram.SetUniformf("pluzx", 0);
-	_shaderProgram.SetUniformf("pluzy", 5);
+	_shaderProgram.SetUniformf("pluzy", 3);
 	_shaderProgram.SetUniformf("pluzz", 0);
 	_shaderProgram.SetUniformf("pcamarax", _camera.GetPosition()[0]);
 	_shaderProgram.SetUniformf("pcamaray", _camera.GetPosition()[1]);
@@ -283,7 +281,7 @@ void GameLoop(){
 	glActiveTexture(GL_TEXTURE1);
 	_depthBuffer.UnbindDepthMap();
 	_shaderProgram.Deactivate();
-
+	
 	// Cuando terminamos de renderear, cambiamos los buffers.
 	glutSwapBuffers();
 }

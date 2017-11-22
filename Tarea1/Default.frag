@@ -14,7 +14,7 @@ uniform float pluzz;
 uniform float pcamarax;
 uniform float pcamaray;
 uniform float pcamaraz;
-uniform sampler2D ShadowMap;
+uniform sampler2D ShadowMap;          
 uniform sampler2D DiffuseTexture;
 
 out vec4 FragColor;
@@ -51,6 +51,6 @@ void main(){
 	vec3 diffuse = clamp(dot(normal,l),0,1)*lightColor;
 	//vec3 specular = pow(clamp(dot(v,r),0,1), 32)*lightColor*.5f;
 	vec3 specular = clamp(dot(v,r),0,1)*lightColor*0.5f;
-	vec4 phong = vec4((ambient + diffuse + specular),1.0f)* texture2D(DiffuseTexture, InterpolatedTexCoord);
+	vec4 phong = vec4((ambient + (1.0f - shadow)*(diffuse + specular)),1.0f)* texture2D(DiffuseTexture, InterpolatedTexCoord);
 	FragColor = vec4(phong);	
 }
