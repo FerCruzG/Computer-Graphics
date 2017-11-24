@@ -1,429 +1,361 @@
 /*********************************************
-	Materia:	Graficas Computacionales
-	Fecha:		Agosto 13, 2017
-	Autor:		Maria Fernanda Cruz Gonzalez
+Materia: Gráficas Computacionales
+Fecha: 24 de Noviembre del 2017
+Autor: A01373179 Maria Fernanda Cruz Gonzalez
+A01373243 Jose Angel Prado Dupont
 **********************************************/
 /*#include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <iostream>
-#include "Circle.h"
-#include "Rectangle.h"
-#include "Employee.h"
-#include "InputFile.h"
-#include <iostream>
-#include <vector>
 #include <glm/glm.hpp>
+#include <vector>
+#include "Mesh.h"
+#include "ShaderProgram.h"
+#include "Transform.h"
+#include "Camera.h"
+#include "Texture2D.h"
+#include <IL/il.h>
+#include "Depthbuffer.h"
 
-//identificador del manager
-GLuint vao;
+Mesh _mesh;
+ShaderProgram _shaderProgram;
+ShaderProgram _shaderProgramDepth;
 
-//identificador del manager de los shaders (ShaderProgram)
-GLuint shaderProgram;
+Transform _transform;
+Transform _transform2;
 
-//float vertsPerFrame = 0.0f;
-//float delta = 0.40f;
+Camera _camera; //camera 3D
+Camera _cameraLuz;
 
-//PROBLEMA 1
-int PerimetroRectangulo(int base, int altura) {
-	int total;
-	total = (base * 2) + (altura * 2);
-	return total;
+Texture2D _texture;
+Texture2D _texture1;
+
+Depthbuffer _depthBuffer;
+
+void Initialize() {
+
+	// Creando toda la memoria que el programa va a utilizar.
+	// Creación del atributo de posiciones de los vértices.
+	// Lista de vec2
+	// Claramente en el CPU y RAM
+	std::vector<glm::vec3> positions;
+	std::vector<glm::vec3> normals;
+	std::vector<unsigned int> indices;
+	std::vector<glm::vec2> texturas;
+	std::vector<glm::vec3> colors;		// Arreglo de colores en el cpu
+	_texture.LoadTexture("caja.jpg");
+	_texture1.LoadTexture("cuadros.jpg");
+
+	//adelante
+	positions.push_back(glm::vec3(-3.0f, -3.0f, 3.0f));
+	positions.push_back(glm::vec3(3.0f, 3.0f, 3.0f));
+	positions.push_back(glm::vec3(-3.0f, 3.0f, 3.0f));
+	positions.push_back(glm::vec3(3.0f, -3.0f, 3.0f));
+
+	normals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+	normals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+	normals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+	normals.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
+
+	texturas.push_back(glm::vec2(0.0f, 0.0f));
+	texturas.push_back(glm::vec2(1.0f, 1.0f));
+	texturas.push_back(glm::vec2(0.0f, 1.0f));
+	texturas.push_back(glm::vec2(1.0f, 0.0f));
+
+	indices.push_back(0);
+	indices.push_back(1);
+	indices.push_back(2);
+	indices.push_back(3);
+	indices.push_back(1);
+	indices.push_back(0);
+
+	//izquierda
+	positions.push_back(glm::vec3(-3.0f, 3.0f, 3.0f));
+	positions.push_back(glm::vec3(-3.0f, -3.0f, -3.0f));
+	positions.push_back(glm::vec3(-3.0f, -3.0f, 3.0f));
+	positions.push_back(glm::vec3(-3.0f, 3.0f, -3.0f));
+
+	normals.push_back(glm::vec3(-1.0f, 0.0f, 0.0f));
+	normals.push_back(glm::vec3(-1.0f, 0.0f, 0.0f));
+	normals.push_back(glm::vec3(-1.0f, 0.0f, 0.0f));
+	normals.push_back(glm::vec3(-1.0f, 0.0f, 0.0f));
+
+	texturas.push_back(glm::vec2(0.0f, 0.0f));
+	texturas.push_back(glm::vec2(1.0f, 1.0f));
+	texturas.push_back(glm::vec2(0.0f, 1.0f));
+	texturas.push_back(glm::vec2(1.0f, 0.0f));
+
+	indices.push_back(4);
+	indices.push_back(5);
+	indices.push_back(6);
+	indices.push_back(7);
+	indices.push_back(5);
+	indices.push_back(4);
+
+	//atras
+	positions.push_back(glm::vec3(-3.0f, 3.0f, -3.0f));
+	positions.push_back(glm::vec3(3.0f, 3.0f, -3.0f));
+	positions.push_back(glm::vec3(-3.0f, -3.0f, -3.0f));
+	positions.push_back(glm::vec3(3.0f, -3.0f, -3.0f));
+
+	normals.push_back(glm::vec3(0.0f, 0.0f, -1.0f));
+	normals.push_back(glm::vec3(0.0f, 0.0f, -1.0f));
+	normals.push_back(glm::vec3(0.0f, 0.0f, -1.0f));
+	normals.push_back(glm::vec3(0.0f, 0.0f, -1.0f));
+
+	texturas.push_back(glm::vec2(0.0f, 0.0f));
+	texturas.push_back(glm::vec2(1.0f, 0.0f));
+	texturas.push_back(glm::vec2(0.0f, 1.0f));
+	texturas.push_back(glm::vec2(1.0f, 1.0f));
+
+	indices.push_back(8);
+	indices.push_back(9);
+	indices.push_back(10);
+	indices.push_back(10);
+	indices.push_back(9);
+	indices.push_back(11);
+
+	//derecha
+	positions.push_back(glm::vec3(3.0f, -3.0f, -3.0f));
+	positions.push_back(glm::vec3(3.0f, 3.0f, 3.0f));
+	positions.push_back(glm::vec3(3.0f, -3.0f, 3.0f));
+	positions.push_back(glm::vec3(3.0f, 3.0f, -3.0f));
+
+	normals.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+	normals.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+	normals.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+	normals.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
+
+	texturas.push_back(glm::vec2(0.0f, 0.0f));
+	texturas.push_back(glm::vec2(1.0f, 1.0f));
+	texturas.push_back(glm::vec2(0.0f, 1.0f));
+	texturas.push_back(glm::vec2(1.0f, 0.0f));
+
+	indices.push_back(12);
+	indices.push_back(13);
+	indices.push_back(14);
+	indices.push_back(15);
+	indices.push_back(13);
+	indices.push_back(12);
+
+	//Arriba
+	positions.push_back(glm::vec3(-3.0f, 3.0f, -3.0f));
+	positions.push_back(glm::vec3(-3.0f, 3.0f, 3.0f));
+	positions.push_back(glm::vec3(3.0f, 3.0f, -3.0f));
+	positions.push_back(glm::vec3(3.0f, 3.0f, 3.0f));
+
+	normals.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+	normals.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+	normals.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+	normals.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
+
+	texturas.push_back(glm::vec2(0.0f, 0.0f));
+	texturas.push_back(glm::vec2(1.0f, 0.0f));
+	texturas.push_back(glm::vec2(0.0f, 1.0f));
+	texturas.push_back(glm::vec2(1.0f, 1.0f));
+
+	indices.push_back(16);
+	indices.push_back(17);
+	indices.push_back(18);
+	indices.push_back(18);
+	indices.push_back(17);
+	indices.push_back(19);
+
+	//abajo
+	positions.push_back(glm::vec3(-3.0f, -3.0f, 3.0f));
+	positions.push_back(glm::vec3(-3.0f, -3.0f, -3.0f));
+	positions.push_back(glm::vec3(3.0f, -3.0f, -3.0f));
+	positions.push_back(glm::vec3(3.0f, -3.0f, 3.0f));
+
+	normals.push_back(glm::vec3(0.0f, -1.0f, 0.0f));
+	normals.push_back(glm::vec3(0.0f, -1.0f, 0.0f));
+	normals.push_back(glm::vec3(0.0f, -1.0f, 0.0f));
+	normals.push_back(glm::vec3(0.0f, -1.0f, 0.0f));
+
+	texturas.push_back(glm::vec2(0.0f, 0.0f));
+	texturas.push_back(glm::vec2(0.0f, 1.0f));
+	texturas.push_back(glm::vec2(1.0f, 1.0f));
+	texturas.push_back(glm::vec2(1.0f, 0.0f));
+
+	indices.push_back(20);
+	indices.push_back(21);
+	indices.push_back(22);
+	indices.push_back(22);
+	indices.push_back(23);
+	indices.push_back(20);
+
+	//Creación del buffer de profundidad con resolucion 2048px
+	_depthBuffer.Create(2048);
+
+	_mesh.SetIndices(indices, GL_STATIC_DRAW);
+	_mesh.CreateMesh(24);
+	_mesh.SetPositionAttribute(positions, GL_STATIC_DRAW, 0);
+	_mesh.SetColorAttribute(colors, GL_STATIC_DRAW, 1);
+	_mesh.SetIndices(indices, GL_STATIC_DRAW);
+	_mesh.SetNormalAttribute(normals, GL_STATIC_DRAW, 2);
+	_mesh.SetTexCoordAttribute(texturas, GL_STATIC_DRAW, 3);
+
+	_shaderProgram.CreateProgram();
+	_shaderProgramDepth.CreateProgram();
+	_shaderProgram.AttachShader("Default.vert", GL_VERTEX_SHADER);
+	_shaderProgram.AttachShader("Default.frag", GL_FRAGMENT_SHADER);
+	_shaderProgramDepth.AttachShader("Depth.vert", GL_VERTEX_SHADER);
+	_shaderProgramDepth.AttachShader("Depth.frag", GL_FRAGMENT_SHADER);
+
+	_shaderProgram.SetAttribute(0, "VertexPosition");
+	_shaderProgram.SetAttribute(1, "VertexColor");
+	_shaderProgram.SetAttribute(2, "VertexNormal");
+	_shaderProgram.SetAttribute(3, "VertexTexCoord");
+
+	_shaderProgramDepth.SetAttribute(0, "VertexPosition");
+
+	_shaderProgram.LinkProgram();
+	_shaderProgramDepth.LinkProgram();
+	_camera.MoveForward(25.0f);
+
+	//Configuración de una segunda cámara en la posición de la luz
+	_cameraLuz.SetOrthigraphic(35.0f, 1.0f);
+	_cameraLuz.SetPosition(0, 5, 0);
+	_cameraLuz.Pitch(-90);
+
+	_transform2.SetScale(10, 0.5f, 10);
+	_transform2.SetPosition(0.0f, -8.0f, -4.0f);
 }
 
-//PROBLEMA 2
-float AreaTriangulo(float base, float altura) {
-	float total;
-	total = (base*altura) / 2.0f;
-	return total;
+void GameLoop() {
+
+	_transform.Rotate(0.04f, 0.04f, 0.04f, true);//a lo largo de los ejes globales
+	_depthBuffer.Bind();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	_shaderProgramDepth.Activate();
+	_shaderProgramDepth.SetUniformMatrix("mvpMatrix", _cameraLuz.GetViewProjection()* _transform.GetModelMatrix());
+	_mesh.Draw(GL_TRIANGLES);
+	_shaderProgramDepth.SetUniformMatrix("mvpMatrix", _cameraLuz.GetViewProjection()* _transform2.GetModelMatrix());
+	_mesh.Draw(GL_TRIANGLES);
+
+	_depthBuffer.Unbind();
+	glViewport(0, 0, glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT));
+	_shaderProgramDepth.Deactivate();
+
+	// Limpiamos el buffer de color y el buffer de profunidad.
+	// Siempre hacerlo al inicio del frame
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	_shaderProgram.Activate();
+	_shaderProgram.SetUniformf("pluzx", 0);
+	_shaderProgram.SetUniformf("pluzy", 3);
+	_shaderProgram.SetUniformf("pluzz", 0);
+	_shaderProgram.SetUniformf("pcamarax", _camera.GetPosition()[0]);
+	_shaderProgram.SetUniformf("pcamaray", _camera.GetPosition()[1]);
+	_shaderProgram.SetUniformf("pcamaraz", _camera.GetPosition()[2]);
+	_shaderProgram.SetUniformi("DiffuseTexture", 0);
+	_shaderProgram.SetUniformi("ShadowMap", 1);
+
+	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform.GetModelMatrix());
+	_shaderProgram.SetUniformMatrix("ModelMatrix", _transform.GetModelMatrix());
+	_shaderProgram.SetUniformMatrix("LightVPMatrix", _cameraLuz.GetViewProjection());
+	glActiveTexture(GL_TEXTURE0);
+	_texture.Bind();
+	glActiveTexture(GL_TEXTURE1);
+	_depthBuffer.BindDepthMap();
+	_mesh.Draw(GL_TRIANGLES);
+	glActiveTexture(GL_TEXTURE0);
+	_texture.Unbind();
+	glActiveTexture(GL_TEXTURE1);
+	_depthBuffer.UnbindDepthMap();
+
+	_shaderProgram.SetUniformMatrix("mvpMatrix", _camera.GetViewProjection() * _transform2.GetModelMatrix());
+	_shaderProgram.SetUniformMatrix("ModelMatrix", _transform2.GetModelMatrix());
+	_shaderProgram.SetUniformMatrix("LightVPMatrix", _cameraLuz.GetViewProjection());
+	glActiveTexture(GL_TEXTURE0);
+	_texture1.Bind();
+	glActiveTexture(GL_TEXTURE1);
+	_depthBuffer.BindDepthMap();
+	_mesh.Draw(GL_TRIANGLES);
+	glActiveTexture(GL_TEXTURE0);
+	_texture1.Unbind();
+	glActiveTexture(GL_TEXTURE1);
+	_depthBuffer.UnbindDepthMap();
+	_shaderProgram.Deactivate();
+
+	// Cuando terminamos de renderear, cambiamos los buffers.
+	glutSwapBuffers();
 }
 
-//PROBLEMA 3
-int Mayor(int a, int b, int c) {
-	if (a > b && a > c) {
-		return a;
-	}
-	else if (b > a && b > c) {
-		return b;
-	}
-	else {
-		return c;
-	}
-}
-
-//PROBLEMA 4
-int Menor(int a, int b, int c) {
-	if (a < b && a < c) {
-		return a;
-	}
-	else if (b < a && b < c) {
-		return b;
-	}
-	else {
-		return c;
-	}
-}
-
-//PROBLEMA 5
-void FilaEstrellas(int n) {
-	while (n > 0) {
-		std::cout << "*";
-		n--;
-	}
-	std::cout << std::endl;
-}
-
-//PROBLEMA 6
-void MatrizEstrellas(int n) {
-	int x = n;
-	while (n > 0) {
-		FilaEstrellas(x);
-		n--;
-	}
-}
-
-//PROBLEMA 7
-void PiramideEstrellas(int n) {
-	int x = 1;
-	int y = n + 1;
-	while (x < y) {
-		FilaEstrellas(x);
-		x++;
-	}
-}
-
-//PROBLEMA 8
-void FlechaEstrellas(int n) {
-	PiramideEstrellas(n);
-	while (n > 0) {
-		FilaEstrellas(n - 1);
-		n--;
-	}
-}
-
-//PROBLEMA 9
-void Fibonacci(int n) {
-	int x = 1;
-	int y = 1;
-	int z = x + y;
-
-	for (int i = 1; i <= n; i++) {
-		std::cout << " " << x;
-		x = y;
-		y = z;
-		z = x + y;
-	}
-	std::cout << std::endl;
-}
-
-//PROBLEMA 10
-bool EsPrimo(int n) {
-	for (int i = 2; i < n;i++) {
-		if (n%i == 0) {
-			return false;
-		}
-		else {
-			return true;
-		}
-	}
-}
-
-void Initialize() {//solo se llama una vez; crea toda la memoria que el prgrama va a utilizar
-				   //lista de elemntos
-	std::vector<glm::vec2> positions;
-	std::vector<glm::vec3>colors;
-
-	int x = 9;
-	//claramente en el CPU y RAM , no tarjeta de video
-	//inserta un elemento al final de la lista
-	//float angle = 0;	
-	/*positions.push_back(glm::vec2(0.0f, 0.0f));
-	float radio = 1.0f;
-	float radio2 = 0.5f;
-	float R = 0.0f;
-	float G = 0.0f;
-	float B = 0.0f;
-
-	positions.push_back(glm::vec2(0.0, 1.0));
-	colors.push_back(glm::vec3(1.0f, 1.0f, 1.0f));
-
-	for (int i = 0; i <= 361; i++) {
-	float j = i;
-
-	float x = radio * cos(i);
-	float y = radio * sin(i);
-
-	positions.push_back(glm::vec2(x, y));
-	colors.push_back(glm::vec3(x,y,	x*y));
-
-	//std::cout << "For = " << x << " " <<y <<std::endl;
-	angle++;
-	}	*/
-	//positions.push_back(glm::vec2(x,y));	//1
-	/*positions.push_back(glm::vec2(.95f, 0.2f)); //2
-
-	//lista ligadallamada 'colors'
-
-	/*	colors.push_back(glm::vec3(0.0f, 0.0f, 0.0f));*/
-/*
-	positions.push_back(glm::vec2(0.6f, -0.8f));		//1
-	positions.push_back(glm::vec2(0.95f, 0.3f));	//1		
-	positions.push_back(glm::vec2(0.45f, 0.15f));	//1
-	positions.push_back(glm::vec2(0.0f, 1.0f));		//1
-	positions.push_back(glm::vec2(0.0f, 0.5f));		//1
-	positions.push_back(glm::vec2(-0.95f, 0.3f));//1
-	positions.push_back(glm::vec2(-0.45f, 0.15f));//1
-	positions.push_back(glm::vec2(-0.6f, -0.8f));//1
-	positions.push_back(glm::vec2(-0.3f, -0.4f));//1
-	positions.push_back(glm::vec2(0.6f, -0.8f));//1
-	positions.push_back(glm::vec2(0.3f, -0.4f));//1
-	positions.push_back(glm::vec2(0.45f, 0.15f));//1
-
-	colors.push_back(glm::vec3(0.0f, 0.749f, 1.0f));
-	colors.push_back(glm::vec3(0.196f, 0.804f, 0.196f));
-	colors.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
-	colors.push_back(glm::vec3(1.0f, 1.0f, 0.0f));
-	colors.push_back(glm::vec3(1.0f, 0.271f, 0.0f));
-	colors.push_back(glm::vec3(1.0f, 0.078f, 0.576f));
-	colors.push_back(glm::vec3(0.545f, 0.0f, 0.545f));
-	colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-	colors.push_back(glm::vec3(1.0f, 0.0f, 0.0f));
-	colors.push_back(glm::vec3(0.0f, 0.749f, 1.0f));
-	colors.push_back(glm::vec3(0.0f, 0.0f, 1.0f));
-	colors.push_back(glm::vec3(0.0f, 1.0f, 0.0f));
-
-	glGenVertexArrays(1, &vao);
-	//todos los VBOs creados y configurados 
-	glBindVertexArray(vao);
-	//identificador del VBO de posiciones
-	GLuint positionsVBO;
-	//creacion del VBO de posiciones
-	glGenBuffers(1, &positionsVBO);//pasa ese numero como referencia 
-								   //Ativar el buffer de posiiones para poder utilizarlo
-	glBindBuffer(GL_ARRAY_BUFFER, positionsVBO);
-	//creamos la memoria y la i nicializamos con los datos del atributo de posicoines
-	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2)*positions.size(), positions.data(), GL_STATIC_DRAW);
-	//Activar el atributo en la tarjeta de video
-	glEnableVertexAttribArray(0);
-	//configuramos los datos del atributo en la tarjeta de video
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
-	//ya no usaremos este VBO en este momento
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	GLuint colorsVBO;
-	glGenBuffers(1, &colorsVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, colorsVBO);									//eficiente leer muchas veces
-	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3)*colors.size(), colors.data(), GL_STATIC_DRAW);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
-
-
-	//Desactivar manager
-	glBindVertexArray(0);
-
-	//crar objeto para leer archivos
-	InputFile ifile;*/
-
-	/*--------------------------- V E R T E X  S H A D E R --------------------------------*/
-/*
-	//cargar el VERTEX SHADER	
-	ifile.Read("Default.vert");
-	//guardar codigo fuente en un string 
-	std::string vertexSource = ifile.GetContents();
-	//creacion de shader tipo vertex y guardamos su identificador en una variable
-	GLuint vertexShaderHandle = glCreateShader(GL_VERTEX_SHADER);
-	const GLchar * vertexSource_c = (const GLchar*)vertexSource.c_str();
-	//estamos dando el codigo fuente a OpenGl para que s elo asigne al shader
-	glShaderSource(vertexShaderHandle, 1, &vertexSource_c, nullptr);
-	//compilar shader en busca de errores
-	//asumir que no hay ningun error
-	glCompileShader(vertexShaderHandle);
-
-	/*--------------------------- F R A G M E N T  S H A D E R --------------------------------*/
-/*
-	ifile.Read("Default.frag");
-	std::string fragmentSource = ifile.GetContents();
-	GLuint fragmentShaderHandle = glCreateShader(GL_FRAGMENT_SHADER);
-	const GLchar *fragmentSource_c = (const GLchar*)fragmentSource.c_str();
-	glShaderSource(fragmentShaderHandle, 1, &fragmentSource_c, nullptr);
-	glCompileShader(fragmentShaderHandle);
-
-	//cramos el identificador para le manager de los shaders
-	shaderProgram = glCreateProgram();
-	//adjuntamos el vertex shader al manager (van a trabajar juntos)
-	glAttachShader(shaderProgram, vertexShaderHandle);
-	//adjuntamos el fragment shader al manager (van a trabajar juntos)
-	glAttachShader(shaderProgram, fragmentShaderHandle);
-	//asociamos un uffer con inidice 0 (posiciones) a la variable VertexPosition
-	glBindAttribLocation(shaderProgram, 0, "VertexPositon");
-	//asociamos un uffer con inidice 1 (colores) a la variable VertexColor
-	glBindAttribLocation(shaderProgram, 1, "VertexColor");
-	//binding de uniforms
-
-	//ejecutamos el proceso de linker (aseguramos que el vertex y fragment son compatibles)
-	glLinkProgram(shaderProgram);
-	//Manager para usar un uniform
-	glUseProgram(shaderProgram);				//del shader	variable
-	GLint uniformLocation = glGetUniformLocation(shaderProgram, "Resolution");
-	glUniform2f(uniformLocation, 650.0f, 650.0f);
-	glUseProgram(0);
-}
-void GameLoop() {	//Rendereando todo el semestre
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);//limpianod buffers
-
-													   //Activamos el vertex shader y el grament shader utilizando el manager
-	glUseProgram(shaderProgram);
-
-	//VBOs asociados automaticamente
-	glBindVertexArray(vao);//activando el manager
-
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 12);
-	//glDrawArrays(GL_TRIANGLE_FAN, 0, 8);
-	//glDrawArrays(GL_TRIANGLE_FAN, 0, vertsPerFrame);
-	//glDrawArrays(GL_TRIANGLE_FAN, 0, 362);
-
-
-	//OpenGL viejito, solo para esta clase
-	//glBegin(GL_TRIANGLES);
-
-	/*glColor3f(1.0f, 0.0f, 0.0f);
-	glVertex2f(-1.0f,-1.0f);
-
-	glColor3f(0.0f, 1.0f, 0.0f);
-	glVertex2f(1.0f, -1.0f);
-
-	glColor3f(0.0f, 0.0f, 1.0f);
-	glVertex2f(0.0f, 1.0f);
-	*/
-
-	//	glEnd();
-
-	//glBindVertexArray(0);
-	/*
-	vertsPerFrame += delta;
-	if (vertsPerFrame < 0.0f || vertsPerFrame >= 362.0f)
-	delta *= -1.0f;*/
-	//cuando terminas de renderear, cambias los buffers
-	//glutSwapBuffers();
-//}
-
-/*void Idle() {
-	//cuando OpenGL entra en mode de reposo (ahorrar bateria), le decimos que vuelva a dibujar
+void Idle() {
+	// Cuando OpenGL entra en modo de reposo 
+	// (para guardar bateria, por ejemplo)
+	// le decimos que vuelva a dibujar ->
+	// Vuelve a mandar a llamar GameLoop
 	glutPostRedisplay();
 }
 
 void ReshapeWindow(int width, int height) {
+	glViewport(0, 0, width, height);
+}
 
-	glViewport(0, 0, width / 2, height / 2);
-	/*glViewport(0, 0, width, height);
-	glUseProgram(shaderProgram);				//del shader	variable
-	GLint uniformLocation = glGetUniformLocation(shaderProgram, "Resolution");
-	glUniform2f(uniformLocation, width, height);
-	glUseProgram(0);*/
-//}
-
-/*int main(int argc, char* argv[]) {		//Main de pruebas
-
-										//inicializar freeglut
-										//Freeglut se encarga de crear una ventana en donde podemos dibujar
+int main(int argc, char* argv[]) {
+	// Inicializar freeglut
+	// Freeglut se encarga de crear una ventana
+	// en donde podemos dibujar
 	glutInit(&argc, argv);
-	glutInitContextVersion(4, 0);
-
-	//configuraion de freeGlut
-	//iniciar contexto de opeGL(capaidades de la aplicacion grafica) pipeline clasico
-	glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
-	//glutInitContextProfile(GLUT_CORE_PROFILE);
-
-	//freeglut nos perite configurar eventos que ocurren en la ventana
-	//un evento como cuando cierran la venta= limpiar memoria= terminar el programa
-	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);	//limpiar memoria
-
-																					//Configuramos framebuffer. solicitamos buffer 
-																					//					true color	profundidad	segundo buffer para renderear
+	// Solicitando una versión específica de OpenGL.
+	//glutInitContextVersion(4, 4);
+	// Iniciar el contexto de OpenGL. El contexto se refiere
+	// a las capacidades que va a tener nuestra aplicación
+	// gráfica.
+	// En este caso estamos trabajando con el pipeline programable.
+	glutInitContextProfile(GLUT_CORE_PROFILE);
+	// Freeglut nos permite configurar eventos que ocurren en la ventana.
+	// Un evento que nos interesa es cuando alguien cierra la ventana.
+	// En este caso, simplemente dejamos de renderear la esscena y terminamos el programa.
+	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
+	// Configuramos el framebuffer. En este caso estamos solicitando un buffer
+	// true color RGBA, un buffer de profundidad y un segundo buffer para renderear.
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
-
-	//dimensiones de ventana
-	glutInitWindowSize(650, 650);
-	//titulo de ventana
+	// Iniciar las dimensiones de la ventana (en pixeles)
+	glutInitWindowSize(600, 600);
+	// Creamos la ventana y le damos un título.
 	glutCreateWindow("Hello World GL");
-
-	//asociamos una funcion de render para mandar llamar ara dibujar un frame
+	// Asociamos una función de render.
+	//Esta función se mandará a llamar para dibujar un frame.
 	glutDisplayFunc(GameLoop);
-
-	//asociar funcion para el cambio de resolucion de la ventana.
-	// Freeglut la va a mandar a llamarcuando se cambie el tamanio de la ventana
+	// Asociamos una función para el cambio de resolución
+	// de la ventana. Freeglut la va a mandar a llamar
+	// cuando alguien cambie el tamaño de la venta.
 	glutReshapeFunc(ReshapeWindow);
-
-	//llmar funion cada que OpenGl entre en modo de reposo
+	// Asociamos la función que se mandará a llamar
+	// cuando OpenGL entre en modo de reposo.
 	glutIdleFunc(Idle);
 
-	//inicializamos Glew para obtener el API de OpenGL de nuestra tarjeta de video
+	// Inicializar GLEW. Esta librería se encarga de obtener el API de OpenGL de
+	// nuestra tarjeta de video. SHAME ON YOU MICROSOFT.
 	glewInit();
+	ilInit();
+	ilEnable(IL_ORIGIN_SET);
+	ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
 
-	//configurar OpenGL
-	glClearColor(1.0f, 1.0f, 0.5f, 1.0f);	//color por default 
-											//Decirle al buffer de profundidad que se active
+	// Configurar OpenGL. Este es el color por default del buffer de color
+	// en el framebuffer.
+	glClearColor(1.0f, 1.0f, 0.5f, 1.0f);
+
+	// Ademas de solicitar el buffer de profundidad, tenemos
+	// que decirle a OpenGL que lo queremos activo
 	glEnable(GL_DEPTH_TEST);
-	//borrado de caras traseras. todo debe ser CCW
+	// Activamos el borrado de caras traseras.
+	// Ahora todos los triangulos que dibujemos deben estar en CCW
 	glEnable(GL_CULL_FACE);
+	// No dibujar las caras traseras de las geometrías.
 	glCullFace(GL_BACK);
 
-	//llamar initializa
+	std::cout << glGetString(GL_VERSION) << std::endl;
+
+	// Configuración inicial de nuestro programa.
 	Initialize();
 
-	glutMainLoop();	//iniciar la aplicaicon (main se pausa en esta linea hasta que se cierre la ventana)
-
-
+	// Iniciar la aplicación. El main se pausará en esta línea hasta que se cierre
+	// la venta de OpenGL.
+	glutMainLoop();
 	return 0;
-
-	/*int p, mayor, menor,n;
-	float a;
-	//std::cout << "Hello, World!" << std::endl;
-	p= PerimetroRectangulo(3, 5);
-	std::cout << "Perimetro de rectangulo = " << p << std::endl;
-
-	a = AreaTriangulo(3.0f, 5.0f);
-	std::cout << "Area de triangulo = " << a << std::endl;
-
-	mayor = Mayor(5, 9, 1);
-	std::cout << "Mayor = " << mayor << std::endl;
-
-	menor = Menor(5, 9, 1);
-	std::cout << "Menor = " << menor << std::endl;
-
-	std::cout << " " << std::endl;
-	FilaEstrellas(5);
-
-	std::cout << " " << std::endl;
-	MatrizEstrellas(4);
-
-	std::cout << " " << std::endl;
-	PiramideEstrellas(6);
-
-	std::cout << " " << std::endl;
-	FlechaEstrellas(3);
-
-	Fibonacci(9);
-
-	std::cout << " " << std::endl;
-	bool primo = EsPrimo(79);
-	bool prime = EsPrimo(52);
-	std::cout << "Primo 79 = " << primo << std::endl;
-	std::cout << "Primo 52 = " << prime << std::endl;
-
-	Circle circulo(2.0, "green");
-	std::cout << circulo.GetRadius() << std::endl;e
-
-	std::cin.get();
-
-	return 0;
-
-	
-	std::string filename = "Prueba.txt";
-	InputFile myFile;
-	myFile.Read(filename);
-	std::string contents = myFile.GetContents();
-
-	std::cout << "Contents: " << contents << std::endl;
-	std::cin.get();
-
 }*/
